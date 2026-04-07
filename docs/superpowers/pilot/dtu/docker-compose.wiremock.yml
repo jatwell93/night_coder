@@ -1,0 +1,7 @@
+services:
+  wiremock-pilot:
+    image: wiremock/wiremock:latest
+    ports:
+      - "3000:8080"
+    volumes:
+      - ./mappings:/home/wiremock/mappings:ro

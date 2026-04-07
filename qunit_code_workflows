@@ -1,0 +1,213 @@
+Here are **copy-paste playbooks** aligned with how Quint separates **tactical** (fewer FPF steps) from **standard/deep** work, plus a **pillar-by-pillar** flow for selecting an overnight / StrongDM-style agent stack (orchestration, guardrails, DTU, judge, observability).
+
+**Related repo artifacts**
+
+- Research index (candidate tools per pillar): `Research/Research_Summary_Table.md`
+- Vertical-slice pilot plan (defaults + `DECISIONS.md`): `docs/superpowers/plans/2026-04-03-overnight-agent-vertical-slice-pilot.md`
+
+---
+
+## Overnight agent stack — pillar-by-pillar (orchestration, Leash, DTU, judge, CXDB)
+
+**Goal:** Pick a **coherent** stack for unattended coding: each pillar gets a fair comparison, explicit trade-offs, and a recorded winner. **CXDB** (trace / context store) and **Leash** (policy / guardrails) are included even when OSS exists (e.g. StrongDM’s `cxdb` / `leash` repos) — still compare them against Langfuse, OpenLLMetry, NTM, harness-native limits, etc.
+
+**When to use this playbook:** You are choosing **multiple coupled** components (not a single library). This maps to the pilot plan’s “full research table + `DECISIONS.md`” step.
+
+### 0) Preconditions (human)
+
+- Skim `Research/Research_Summary_Table.md` §1 *Master index* so you know the full candidate set per pillar.
+- Write non‑negotiables (budget, VPS vs laptop, “no PII in traces”, max overnight wall-clock, etc.) — same content as pilot `CONSTRAINTS.md` when you run the pilot.
+
+### 1) Overall frame (whole stack)
+
+```text
+/q-status
+/q-search
+/q-frame
+```
+
+In `/q-frame`, pin **measurable** acceptance for v1, e.g.:
+
+- One repo, one **external** scenario, one **judge** path, one **DTU** stub, one **orchestrator** spine, overnight run with **hard stop**, morning review without live babysitting.
+
+### 2) Run each pillar as its own mini decision (repeat 5×)
+
+For **each** pillar below, run the same core sequence so options don’t get “bundled” unfairly:
+
+```text
+/q-char
+/q-explore
+/q-compar
+/q-decide
+```
+
+**Parity rule (critical):** Same evaluation budget, same pilot task shape, same host assumptions for every variant *in that pillar* (e.g. don’t compare a cloud-only product only on localhost without noting the gap).
+
+#### Pillar A — Orchestration (“Attractor”)
+
+**Question:** What **runs** the agent loop overnight (plan → act → verify → iterate)?
+
+**Include from research table (non-exhaustive):** OpenHands, AG2 (AutoGen) / LangGraph patterns, Deer Flow, CrewAI, AgentFlow *(Stanford / Flow-GRPO research line — not vendor “agent flow” UIs)*, Gas Town, **oh-my-openagent** *(canonical rename of oh-my-opencode)*, Ralph orchestrator, Ruflo (claude-flow), Agent Flywheel (ACFS).
+
+#### Pillar B — Guardrails / Leash
+
+**Question:** What **blocks or gates** dangerous actions (shell, git, network, spend) beyond prompt text?
+
+**Include:** StrongDM **Leash** (OSS policy layer — compare honestly: fit for *your* host vs coding-agent surface), **NTM** (tmux session policy / audit), harness-native limits (Ralph caps, Ruflo sandbox modes, oh-my-openagent hooks), **custom** allowlists / wrappers. Treat “no leash” as an explicit variant only if you accept the risk in `CONSTRAINTS.md`.
+
+#### Pillar C — DTU / mocks (“Digital Twin Universe”)
+
+**Question:** How do you stub or replay **external dependencies** so overnight runs don’t hit live APIs?
+
+**Include:** Mockoon, Keploy, MSW; plus research gap notes: LocalStack, Browserless / Playwright-style pools. Pick based on **your** stack (HTTP-only vs AWS-shaped vs record-replay).
+
+#### Pillar D — Judge & scenarios
+
+**Question:** How do you store **agent-proof** scenarios and score **satisfaction** (not repo tests the agent can rewrite)?
+
+**Include:** OpenJudge (`py-openjudge`), Langfuse model-based evals (if used as judge), AgentScope eval patterns, **build-yourself** harness (Markdown scenarios + script), Dify *(usually “too heavy” as an embedded judge — still compare and document rejection)*. StrongDM’s narrative is the **reference rubric** even if you don’t ship their full factory.
+
+#### Pillar E — Observability / CXDB (“context & traces”)
+
+**Question:** Where do prompts, tool calls, phases, and costs land for **morning review**?
+
+**Include:** Langfuse, OpenLLMetry → OTLP backends, StrongDM **CXDB** (OSS context store — compare operability vs your scale), **file/JSONL** traces (Ralph `.agent/events.jsonl`, NTM audit), plus any “good enough” `tee` of JSONL for v0.
+
+### 3) Integrate + apply
+
+```text
+/q-apply
+```
+
+Write the outcomes into **`docs/superpowers/pilot/DECISIONS.md`** (one row per pillar + models/host/time), linking each `/q-decide` contract.
+
+### 4) Sanity check
+
+```bash
+quint-code board
+# optional hard gate later:
+# quint-code board --check
+```
+
+### 5) Optional complementary layer
+
+If you use a **secondary coding CLI** beside the orchestrator (Aider, etc.), run **either** a quick `/q-note` (tactical) **or** repeat the pillar mini-sequence if it changes secrets, cost, or workflow materially.
+
+---
+
+## Quick tactical (reversible, small blast radius)
+
+**Goal:** Record enough rationale without slowing the team down.
+
+1. **Session start**  
+   ```text
+   /q-status
+   ```
+
+2. **If you’re about to pick an approach**  
+   - **Micro-choice** (library, config, small API shape):  
+     ```text
+     /q-note
+     ```  
+     *(title + short rationale from the conversation)*
+
+   - **Anything that would surprise a teammate in a week** (data model touch, new dependency, auth path):  
+     ```text
+     /q-frame
+     ```
+     Then **only as far as needed**:  
+     ```text
+     /q-explore
+     /q-decide
+     ```
+     *(Skip `/q-char` and `/q-compar` when options are obvious or low-risk.)*
+
+3. **Implement** (your normal PR flow).
+
+4. **After merge or when the decision is “real” in main**  
+   Close the measurement loop per your setup (baseline → verify → measure), then:  
+   ```text
+   /q-status
+   ```
+
+5. **Optional sanity check**  
+   ```bash
+   quint-code board
+   ```
+
+**Rule of thumb:** If reverting is “revert PR + redeploy” and impact is contained, stay tactical. If two reasonable designs exist and you’d argue in a meeting, add `/q-char` + `/q-compar` next time.
+
+---
+
+## Deep architecture (hard to reverse, cross-cutting, or security/compliance)
+
+**Goal:** Fair comparison, explicit trade-offs, durable decision contract, refresh discipline.
+
+1. **Session start**  
+   ```text
+   /q-status
+   /q-search   <!-- if the area already has decisions -->
+   ```
+
+2. **Frame** (force measurable acceptance and non-negotiable constraints)  
+   ```text
+   /q-frame
+   ```
+   If several active problems compete: use problem selection in your tooling (e.g. `quint_problem` “select” in MCP) so you’re solving the right bottleneck.
+
+3. **Characterize before comparing**  
+   ```text
+   /q-char
+   ```
+   **Before** you rank options: write **parity rules** (same scope, same assumptions, same evaluation budget for each variant).
+
+4. **Explore real alternatives**  
+   ```text
+   /q-explore
+   ```
+   Aim for **≥2–3 variants that differ in kind**, each with a **weakest-link** label and any **stepping-stone** flags.
+
+5. **Compare fairly**  
+   ```text
+   /q-compar
+   ```
+   Identify the **non-dominated set**, then apply the **selection policy you stated earlier** (not “winner by vibe”).
+
+6. **Decide with a contract**  
+   ```text
+   /q-decide
+   ```
+   Include invariants, rollback, admissibility, and a **`valid_until`** (or explicit refresh date) so staleness is detectable.
+
+7. **Turn decision into work**  
+   ```text
+   /q-apply
+   ```
+
+8. **Implement + verify**  
+   Baseline → run tests / read diffs → **measure** (don’t claim “done” from memory).
+
+9. **Ongoing**  
+   - ```text
+     /q-refresh
+     ```  
+     when assumptions change or `valid_until` passes.  
+   - ```bash
+     quint-code board --check
+     ```  
+     in CI if you want a hard gate.
+
+10. **When methodology fights unknowns**  
+    ```bash
+    quint-code fpf search "keyword" --limit 5
+    quint-code fpf search "keyword" --full
+    quint-code fpf section "Exact Section Heading"
+    ```
+
+---
+
+**When to flip from tactical → deep:** multi-team coupling, security/auth, persistence/schema changes you can’t migrate trivially, SLA/SLO impact, or “we’ll live with this for years.”
+
+**When the overnight stack is the decision:** use **Overnight agent stack — pillar-by-pillar** above (it is a structured multi-pass deep comparison, not a single `/q-note`).
+
+If you tell me your stack (e.g. Cursor-only vs CI with `board --check`), I can tighten each playbook to a **single ordered checklist** for your repo.

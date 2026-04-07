@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/api/status"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": { "status": "ok" },
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}
