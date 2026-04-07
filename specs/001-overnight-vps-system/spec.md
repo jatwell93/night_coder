@@ -7,23 +7,14 @@
 
 ## User Scenarios & Testing *(mandatory)*
 
-<!--
-  IMPORTANT: User stories should be PRIORITIZED as user journeys ordered by importance.
-  Each user story/journey must be INDEPENDENTLY TESTABLE - meaning if you implement just ONE of them,
-  you should still have a viable MVP (Minimum Viable Product) that delivers value.
-  
-  Assign priorities (P1, P2, P3, etc.) to each story, where P1 is the most critical.
-  Think of each story as a standalone slice of functionality that can be:
-  - Developed independently
-  - Tested independently
-  - Deployed independently
-  - Demonstrated to users independently
--->
+
 
 ### User Story 1 - Safe Overnight Execution (Priority: P1)
 
-As an operator, I can run unattended overnight coding sessions on a VPS with enforced guardrails,
-so autonomous work can proceed without damaging the project or environment.
+As an operator, I can start an unattended overnight run on a VPS where the orchestrator
+iterates autonomously through coding and validation phases while guardrails enforce safety
+policies, so the system works toward scenario satisfaction without damaging the project or
+requiring human intervention.
 
 **Why this priority**: No unattended system is viable unless safety controls reliably prevent harmful actions.
 
@@ -38,7 +29,7 @@ so autonomous work can proceed without damaging the project or environment.
 
 ### User Story 2 - External Outcome-Based Judging (Priority: P2)
 
-As a reviewer, I can evaluate run results using an external judge harness that the coding agent
+As a reviewer, I can evaluate run results using an external judge harness and scenarios that the coding agent
 cannot modify, so acceptance is based on user outcomes rather than superficial execution signals.
 
 **Why this priority**: This prevents reward-hacking and keeps validation aligned to real outcomes.
@@ -54,8 +45,10 @@ cannot modify, so acceptance is based on user outcomes rather than superficial e
 
 ### User Story 3 - Continuous Validation with DTU and Memory (Priority: P3)
 
-As an operator, I can validate repeatedly against digital twins and use run memory plus telemetry,
-so the system improves reliability across nights instead of repeating the same failures.
+As an operator, I can validate continuously against digital twin dependencies so scenario
+cycles run at scale without live API cost, rate limits, or flakiness, and use cross-run memory
+plus telemetry as the audit trail for morning review, so the system improves reliability across
+nights instead of repeating the same failures.
 
 **Why this priority**: Repeatability and cross-run learning are required to move from trial to V1.
 
@@ -70,10 +63,7 @@ so the system improves reliability across nights instead of repeating the same f
 
 ### Edge Cases
 
-<!--
-  ACTION REQUIRED: The content in this section represents placeholders.
-  Fill them out with the right edge cases.
--->
+
 
 - Guardrail policy blocks a command required for a legitimate task path.
 - Judge service is temporarily unavailable during verdict generation.
@@ -135,3 +125,4 @@ so the system improves reliability across nights instead of repeating the same f
 - Scenario definitions and DTU behavior profiles are authored before overnight trial execution.
 - Budget limits and fallback policy are configured before production-like overnight schedules.
 - V1 scope focuses on single-operator reliability before expanding to multi-operator governance.
+

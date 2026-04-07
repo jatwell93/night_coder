@@ -17,6 +17,12 @@
 
 **Purpose**: Initialize feature-level artifacts and quality baseline.
 
+- [ ] T055 Provision VPS baseline (provider instance, SSH hardening, firewall, non-root operator) in `docs/superpowers/pilot/runbooks/vps-bootstrap.md`
+- [ ] T056 Install runtime prerequisites (Python 3.12+, git, tmux, curl, jq) and record commands in `docs/superpowers/pilot/runbooks/vps-bootstrap.md`
+- [ ] T057 Install and validate container runtime (Docker/Podman rootless profile) in `docs/superpowers/pilot/runbooks/vps-container-runtime.md`
+- [ ] T058 Install Ralph orchestrator and verify CLI health checks in `docs/superpowers/pilot/runbooks/vps-ralph-install.md`
+- [ ] T059 Configure Doppler service-token injection flow for run environment in `docs/superpowers/pilot/runbooks/vps-secrets-bootstrap.md`
+- [ ] T060 [P] Install and smoke-test DTU/judge dependencies (WireMock, OpenJudge, Langfuse/OpenLLMetry hooks) in `docs/superpowers/pilot/runbooks/vps-dependency-smoke-tests.md`
 - [ ] T001 Create runtime documentation skeleton in `docs/superpowers/pilot/runbooks/README.md`
 - [ ] T002 Create trial configuration directory in `docs/superpowers/pilot/config/README.md`
 - [ ] T003 [P] Create testing directory placeholders in `tests/unit/.gitkeep`
@@ -39,6 +45,8 @@
 - [ ] T011 [P] Implement artifact path resolver utility in `src/lib/artifact_paths.py`
 - [ ] T012 [P] Implement run id and timestamp utility in `src/lib/run_identity.py`
 - [ ] T013 Implement structured event envelope utility in `src/lib/event_envelope.py`
+- [ ] T049 [P] Add unit test for model role-policy adapter with fallback in `tests/unit/test_model_policy_adapter.py`
+- [ ] T050 Implement model/provider role-policy adapter with fallback handling in `src/services/model_policy_service.py`
 - [ ] T014 Configure feature-level quality and test command matrix in `docs/superpowers/pilot/runbooks/verification-matrix.md`
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
@@ -58,6 +66,7 @@
 - [ ] T015 [P] [US1] Add contract test for blocked-action event payload in `tests/contract/test_guardrail_event_contract.py`
 - [ ] T016 [P] [US1] Add integration test for guarded unattended run path in `tests/integration/test_guarded_overnight_run.py`
 - [ ] T017 [P] [US1] Add integration test for offline/online profile enforcement in `tests/integration/test_execution_profiles.py`
+- [ ] T051 [P] [US1] Add integration test for orchestrator iteration loop with satisfaction-based termination in `tests/integration/test_orchestrator_iteration_loop.py`
 
 ### Implementation for User Story 1
 
@@ -67,6 +76,7 @@
 - [ ] T021 [US1] Implement run lifecycle state transitions in `src/services/run_session_service.py`
 - [ ] T022 [US1] Implement blocked-action logging with reason codes in `src/services/guardrail_audit_service.py`
 - [ ] T023 [US1] Wire profile selection (`offline` default) in `src/services/run_profile_service.py`
+- [ ] T052 [US1] Implement orchestrator iteration controller with satisfaction-based loop termination in `src/services/orchestrator_loop_service.py`
 - [ ] T024 [US1] Document US1 operator flow in `docs/superpowers/pilot/runbooks/us1-safe-execution.md`
 
 **Checkpoint**: User Story 1 should be fully functional and independently testable.
@@ -109,6 +119,7 @@
 - [ ] T034 [P] [US3] Add contract test for run manifest schema compliance in `tests/contract/test_run_manifest_contract.py`
 - [ ] T035 [P] [US3] Add integration test for DTU-only validation execution in `tests/integration/test_dtu_validation_cycle.py`
 - [ ] T036 [P] [US3] Add integration test for memory retrieval reducing repeated failures in `tests/integration/test_memory_feedback_loop.py`
+- [ ] T053 [P] [US3] Add integration test for morning review report assembly from telemetry and verdicts in `tests/integration/test_morning_review_report.py`
 
 ### Implementation for User Story 3
 
@@ -118,6 +129,7 @@
 - [ ] T040 [US3] Implement telemetry event publisher for execution/safety/judge/memory in `src/services/telemetry_service.py`
 - [ ] T041 [US3] Implement run manifest builder and writer in `src/services/run_manifest_service.py`
 - [ ] T042 [US3] Link telemetry, memory, and manifest steps into end-of-run workflow in `src/services/run_finalize_service.py`
+- [ ] T054 [US3] Implement morning review report assembler in `src/services/morning_review_service.py`
 - [ ] T043 [US3] Document US3 continuous validation flow in `docs/superpowers/pilot/runbooks/us3-dtu-memory-loop.md`
 
 **Checkpoint**: All user stories are independently functional and traceable.
@@ -141,7 +153,7 @@
 ### Phase Dependencies
 
 - **Setup (Phase 1)**: No dependencies - start immediately
-- **Foundational (Phase 2)**: Depends on Setup completion - blocks all user stories
+- **Foundational (Phase 2)**: Depends on Setup completion (including VPS bootstrap T055-T060) - blocks all user stories
 - **User Story Phases (Phase 3-5)**: Depend on Foundational completion
   - US1 is MVP-first and should be completed first
   - US2 and US3 can start after foundation, but US2 should precede full US3 trial closure
@@ -149,9 +161,9 @@
 
 ### User Story Dependencies
 
-- **US1 (P1)**: No dependency on other stories
+- **US1 (P1)**: No dependency on other stories. T052 (iteration controller) depends on T020 (launcher), T021 (state transitions), and uses US2 verdict outputs as the satisfaction signal for loop termination.
 - **US2 (P2)**: Depends on US1 run lifecycle outputs for scenario evidence and run completion hooks
-- **US3 (P3)**: Depends on US1 run flow and US2 verdict outputs for complete manifest and telemetry closure
+- **US3 (P3)**: Depends on US1 run flow and US2 verdict outputs for complete manifest and telemetry closure. T054 (morning review assembler) depends on T040 (telemetry), T041 (manifest), and US2 verdict outputs.
 
 ### Within Each User Story
 
@@ -163,6 +175,7 @@
 ### Parallel Opportunities
 
 - Setup placeholders and docs tasks marked [P] can run in parallel
+- Platform bootstrap T060 can run in parallel once T055-T059 complete
 - Foundational utility services T011 and T012 can run in parallel
 - Contract and integration tests within each story marked [P] can run in parallel
 - Core service tasks marked [P] in each story can be split across contributors
