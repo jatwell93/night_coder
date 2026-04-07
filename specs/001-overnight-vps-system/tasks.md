@@ -1,0 +1,219 @@
+# Tasks: Overnight VPS Coding System
+
+**Input**: Design documents from `/specs/001-overnight-vps-system/`
+**Prerequisites**: plan.md (required), spec.md (required for user stories), research.md, data-model.md, contracts/
+
+**Tests**: Test tasks are REQUIRED. Every user story includes automated validation evidence.
+
+**Organization**: Tasks are grouped by user story to enable independent implementation and testing.
+
+## Format: `[ID] [P?] [Story] Description`
+
+- **[P]**: Can run in parallel (different files, no dependencies)
+- **[Story]**: Which user story this task belongs to (e.g., US1, US2, US3)
+- Include exact file paths in descriptions
+
+## Phase 1: Setup (Shared Infrastructure)
+
+**Purpose**: Initialize feature-level artifacts and quality baseline.
+
+- [ ] T001 Create runtime documentation skeleton in `docs/superpowers/pilot/runbooks/README.md`
+- [ ] T002 Create trial configuration directory in `docs/superpowers/pilot/config/README.md`
+- [ ] T003 [P] Create testing directory placeholders in `tests/unit/.gitkeep`
+- [ ] T004 [P] Create testing directory placeholders in `tests/integration/.gitkeep`
+- [ ] T005 [P] Create testing directory placeholders in `tests/contract/.gitkeep`
+- [ ] T006 Configure quality check script reference in `docs/superpowers/pilot/runbooks/quality-gates.md`
+
+---
+
+## Phase 2: Foundational (Blocking Prerequisites)
+
+**Purpose**: Core contracts and shared utilities required before any user-story delivery.
+
+**⚠️ CRITICAL**: No user story work can begin until this phase is complete
+
+- [ ] T007 Define canonical run status taxonomy in `docs/superpowers/pilot/runbooks/status-taxonomy.md`
+- [ ] T008 Define shared reason-code taxonomy for guardrails and judge in `docs/superpowers/pilot/runbooks/reason-codes.md`
+- [ ] T009 Implement run manifest schema validator in `src/lib/manifest_validation.py`
+- [ ] T010 Implement judge verdict schema validator in `src/lib/verdict_validation.py`
+- [ ] T011 [P] Implement artifact path resolver utility in `src/lib/artifact_paths.py`
+- [ ] T012 [P] Implement run id and timestamp utility in `src/lib/run_identity.py`
+- [ ] T013 Implement structured event envelope utility in `src/lib/event_envelope.py`
+- [ ] T014 Configure feature-level quality and test command matrix in `docs/superpowers/pilot/runbooks/verification-matrix.md`
+
+**Checkpoint**: Foundation ready - user story implementation can now begin in parallel
+
+---
+
+## Phase 3: User Story 1 - Safe Overnight Execution (Priority: P1) 🎯 MVP
+
+**Goal**: Run unattended sessions safely with enforceable guardrails and reviewable blocked-action evidence.
+
+**Independent Test**: Start an unattended run with guardrails enabled and confirm blocked dangerous commands are denied while allowed commands proceed.
+
+### Tests for User Story 1 (REQUIRED) ⚠️
+
+> **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
+
+- [ ] T015 [P] [US1] Add contract test for blocked-action event payload in `tests/contract/test_guardrail_event_contract.py`
+- [ ] T016 [P] [US1] Add integration test for guarded unattended run path in `tests/integration/test_guarded_overnight_run.py`
+- [ ] T017 [P] [US1] Add integration test for offline/online profile enforcement in `tests/integration/test_execution_profiles.py`
+
+### Implementation for User Story 1
+
+- [ ] T018 [P] [US1] Implement guardrail policy loader in `src/services/guardrail_policy_service.py`
+- [ ] T019 [P] [US1] Implement blocked-command interception adapter in `src/services/guardrail_enforcement_service.py`
+- [ ] T020 [US1] Implement unattended run launcher workflow in `src/cli/run_overnight.py`
+- [ ] T021 [US1] Implement run lifecycle state transitions in `src/services/run_session_service.py`
+- [ ] T022 [US1] Implement blocked-action logging with reason codes in `src/services/guardrail_audit_service.py`
+- [ ] T023 [US1] Wire profile selection (`offline` default) in `src/services/run_profile_service.py`
+- [ ] T024 [US1] Document US1 operator flow in `docs/superpowers/pilot/runbooks/us1-safe-execution.md`
+
+**Checkpoint**: User Story 1 should be fully functional and independently testable.
+
+---
+
+## Phase 4: User Story 2 - External Outcome-Based Judging (Priority: P2)
+
+**Goal**: Evaluate run outcomes via immutable external harness with scenario-based verdicts.
+
+**Independent Test**: Execute a scenario where process completes but user outcome is wrong and verify unsatisfactory verdict with evidence.
+
+### Tests for User Story 2 (REQUIRED) ⚠️
+
+- [ ] T025 [P] [US2] Add contract test for judge verdict schema compliance in `tests/contract/test_judge_verdict_contract.py`
+- [ ] T026 [P] [US2] Add integration test for immutable judge harness boundary in `tests/integration/test_judge_immutability_boundary.py`
+- [ ] T027 [P] [US2] Add integration test for outcome-based unsatisfactory verdict path in `tests/integration/test_outcome_based_judging.py`
+
+### Implementation for User Story 2
+
+- [ ] T028 [P] [US2] Implement scenario evidence assembler in `src/services/scenario_evidence_service.py`
+- [ ] T029 [P] [US2] Implement external judge invocation wrapper in `src/services/judge_runner_service.py`
+- [ ] T030 [US2] Implement verdict persistence workflow in `src/services/judge_verdict_service.py`
+- [ ] T031 [US2] Implement immutable harness path guard in `src/services/judge_harness_guard_service.py`
+- [ ] T032 [US2] Integrate verdict generation into run completion pipeline in `src/services/run_completion_service.py`
+- [ ] T033 [US2] Document US2 reviewer flow in `docs/superpowers/pilot/runbooks/us2-outcome-judging.md`
+
+**Checkpoint**: User Stories 1 and 2 both operate independently with trustworthy verdict outputs.
+
+---
+
+## Phase 5: User Story 3 - Continuous Validation with DTU and Memory (Priority: P3)
+
+**Goal**: Enable repeatable DTU-backed validation and memory-assisted reduction of repeated failures.
+
+**Independent Test**: Run repeated validations against DTU and verify memory retrieval reduces repeated failure loops.
+
+### Tests for User Story 3 (REQUIRED) ⚠️
+
+- [ ] T034 [P] [US3] Add contract test for run manifest schema compliance in `tests/contract/test_run_manifest_contract.py`
+- [ ] T035 [P] [US3] Add integration test for DTU-only validation execution in `tests/integration/test_dtu_validation_cycle.py`
+- [ ] T036 [P] [US3] Add integration test for memory retrieval reducing repeated failures in `tests/integration/test_memory_feedback_loop.py`
+
+### Implementation for User Story 3
+
+- [ ] T037 [P] [US3] Implement DTU dependency readiness checker in `src/services/dtu_health_service.py`
+- [ ] T038 [P] [US3] Implement DTU-backed scenario executor in `src/services/dtu_validation_service.py`
+- [ ] T039 [P] [US3] Implement memory retrieval and writeback orchestration in `src/services/memory_feedback_service.py`
+- [ ] T040 [US3] Implement telemetry event publisher for execution/safety/judge/memory in `src/services/telemetry_service.py`
+- [ ] T041 [US3] Implement run manifest builder and writer in `src/services/run_manifest_service.py`
+- [ ] T042 [US3] Link telemetry, memory, and manifest steps into end-of-run workflow in `src/services/run_finalize_service.py`
+- [ ] T043 [US3] Document US3 continuous validation flow in `docs/superpowers/pilot/runbooks/us3-dtu-memory-loop.md`
+
+**Checkpoint**: All user stories are independently functional and traceable.
+
+---
+
+## Phase 6: Polish & Cross-Cutting Concerns
+
+**Purpose**: Final hardening and end-to-end verification across stories.
+
+- [ ] T044 [P] Consolidate overnight trial runbook in `docs/superpowers/pilot/runbooks/trial-e2e.md`
+- [ ] T045 [P] Add troubleshooting matrix for failure modes in `docs/superpowers/pilot/runbooks/troubleshooting.md`
+- [ ] T046 Validate performance budget and review-time targets in `tests/integration/test_trial_performance_budgets.py`
+- [ ] T047 Validate quickstart end-to-end flow in `specs/001-overnight-vps-system/quickstart.md`
+- [ ] T048 Run full verification matrix and record outcomes in `docs/superpowers/pilot/runbooks/verification-results.md`
+
+---
+
+## Dependencies & Execution Order
+
+### Phase Dependencies
+
+- **Setup (Phase 1)**: No dependencies - start immediately
+- **Foundational (Phase 2)**: Depends on Setup completion - blocks all user stories
+- **User Story Phases (Phase 3-5)**: Depend on Foundational completion
+  - US1 is MVP-first and should be completed first
+  - US2 and US3 can start after foundation, but US2 should precede full US3 trial closure
+- **Polish (Phase 6)**: Depends on target user stories completed
+
+### User Story Dependencies
+
+- **US1 (P1)**: No dependency on other stories
+- **US2 (P2)**: Depends on US1 run lifecycle outputs for scenario evidence and run completion hooks
+- **US3 (P3)**: Depends on US1 run flow and US2 verdict outputs for complete manifest and telemetry closure
+
+### Within Each User Story
+
+- Tests MUST be written and fail before implementation
+- Contract/integration tests before service wiring
+- Core service logic before CLI/workflow integration
+- Documentation updates after implementation and tests pass
+
+### Parallel Opportunities
+
+- Setup placeholders and docs tasks marked [P] can run in parallel
+- Foundational utility services T011 and T012 can run in parallel
+- Contract and integration tests within each story marked [P] can run in parallel
+- Core service tasks marked [P] in each story can be split across contributors
+
+---
+
+## Parallel Example: User Story 2
+
+```bash
+# Run US2 tests in parallel:
+Task: "T025 [US2] tests/contract/test_judge_verdict_contract.py"
+Task: "T026 [US2] tests/integration/test_judge_immutability_boundary.py"
+Task: "T027 [US2] tests/integration/test_outcome_based_judging.py"
+
+# Build US2 services in parallel:
+Task: "T028 [US2] src/services/scenario_evidence_service.py"
+Task: "T029 [US2] src/services/judge_runner_service.py"
+Task: "T031 [US2] src/services/judge_harness_guard_service.py"
+```
+
+---
+
+## Implementation Strategy
+
+### MVP First (User Story 1 Only)
+
+1. Complete Phase 1 and Phase 2
+2. Complete all US1 tests and implementation tasks
+3. Validate guarded unattended run behavior
+4. Stop and review MVP readiness
+
+### Incremental Delivery
+
+1. Deliver US1 safe unattended execution
+2. Add US2 external judging and immutability boundary
+3. Add US3 DTU + memory + telemetry feedback loop
+4. Finish Phase 6 cross-cutting validation
+
+### Parallel Team Strategy
+
+1. One owner completes foundational shared utilities
+2. Once foundation is complete:
+   - Engineer A: US1
+   - Engineer B: US2
+   - Engineer C: US3
+3. Rejoin for integration and polish tasks
+
+---
+
+## Notes
+
+- All tasks follow required checklist format with task id, optional [P], optional [USx], and file path.
+- Story phases are independently testable and map directly to spec priorities.
+- Suggested MVP scope is **Phase 1 + Phase 2 + Phase 3 (US1)**.

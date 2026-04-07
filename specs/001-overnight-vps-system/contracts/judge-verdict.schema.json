@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://night-coder.local/contracts/judge-verdict.schema.json",
+  "title": "JudgeVerdict",
+  "type": "object",
+  "required": [
+    "verdict_id",
+    "run_id",
+    "scenario_id",
+    "satisfied",
+    "score",
+    "reasoning",
+    "evidence_refs",
+    "issued_at"
+  ],
+  "properties": {
+    "verdict_id": { "type": "string", "minLength": 1 },
+    "run_id": { "type": "string", "minLength": 1 },
+    "scenario_id": { "type": "string", "minLength": 1 },
+    "satisfied": { "type": "boolean" },
+    "score": { "type": "number", "minimum": 0, "maximum": 1 },
+    "reasoning": { "type": "string", "minLength": 1 },
+    "evidence_refs": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "issued_at": { "type": "string", "format": "date-time" }
+  },
+  "additionalProperties": false
+}

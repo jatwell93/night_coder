@@ -95,6 +95,8 @@ You **MUST** consider the user input before proceeding (if not empty).
        **Automatic Hook**: {extension}
        Executing: `/{command}`
        EXECUTE_COMMAND: {command}
+
+       Wait for the result of the hook command before proceeding.
        ```
    - If no hooks are registered or `.specify/extensions.yml` does not exist, skip silently
 

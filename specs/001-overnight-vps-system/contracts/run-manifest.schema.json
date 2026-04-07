@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://night-coder.local/contracts/run-manifest.schema.json",
+  "title": "RunManifest",
+  "type": "object",
+  "required": [
+    "run_id",
+    "git_sha",
+    "profile",
+    "scenario_ids",
+    "verdict_refs",
+    "artifact_refs",
+    "trace_refs",
+    "summary"
+  ],
+  "properties": {
+    "run_id": { "type": "string", "minLength": 1 },
+    "git_sha": { "type": "string", "minLength": 7 },
+    "profile": { "type": "string", "enum": ["offline", "online"] },
+    "scenario_ids": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "verdict_refs": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "artifact_refs": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "trace_refs": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "summary": {
+      "type": "object",
+      "required": ["status", "started_at", "ended_at"],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["completed", "failed", "aborted", "evaluation-pending"]
+        },
+        "started_at": { "type": "string", "format": "date-time" },
+        "ended_at": { "type": "string", "format": "date-time" },
+        "notes": { "type": "string" }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}
