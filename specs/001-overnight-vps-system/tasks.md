@@ -58,10 +58,10 @@ These tasks must be performed (or explicitly approved) by the user and cannot be
 
 **Purpose**: Initialize feature-level artifacts and quality baseline.
 
-- [ ] T055 [USER] Provision VPS baseline (provider instance, SSH hardening, firewall, non-root operator) in `docs/superpowers/pilot/runbooks/vps-bootstrap.md`
-- [ ] T056 Install runtime prerequisites (Python 3.12+, git, tmux, curl, jq) and record commands in `docs/superpowers/pilot/runbooks/vps-bootstrap.md`
-- [ ] T057 Install and validate container runtime (Docker/Podman rootless profile) in `docs/superpowers/pilot/runbooks/vps-container-runtime.md`
-- [ ] T058 Install Ralph orchestrator and verify CLI health checks in `docs/superpowers/pilot/runbooks/vps-ralph-install.md`
+- [x] T055 [USER] Provision VPS baseline (provider instance, SSH hardening, firewall, non-root operator) in `docs/superpowers/pilot/runbooks/vps-bootstrap.md`
+- [x] T056 Install runtime prerequisites (Python 3.12+, git, tmux, curl, jq) and record commands in `docs/superpowers/pilot/runbooks/vps-bootstrap.md`
+- [x] T057 Install and validate container runtime (Docker/Podman rootless profile) in `docs/superpowers/pilot/runbooks/vps-container-runtime.md`
+- [x] T058 Install Ralph orchestrator and verify CLI health checks in `docs/superpowers/pilot/runbooks/vps-ralph-install.md`
 - [ ] T059 [USER] Configure Doppler service-token injection flow for run environment in `docs/superpowers/pilot/runbooks/vps-secrets-bootstrap.md`
 - [ ] T060 [P] Install and smoke-test DTU/judge dependencies (WireMock, OpenJudge, Langfuse/OpenLLMetry hooks) in `docs/superpowers/pilot/runbooks/vps-dependency-smoke-tests.md`
 - [ ] T061 Configure NTM guardrail runtime and baseline policies on VPS in `docs/superpowers/pilot/runbooks/vps-guardrails-bootstrap.md`

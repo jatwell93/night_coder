@@ -1,0 +1,99 @@
+# night_coder — base ignores aligned with specs/001-overnight-vps-system
+# (Python 3.12+, Bash, Docker/Podman, Doppler, secrets, VPS/operator hygiene)
+
+# --- Secrets & credentials (never commit) ---
+.env
+.env.*
+!.env.example
+!.env*.example
+*.pem
+*.p12
+*.pfx
+*.key
+# SSH private keys (public *.pub is OK)
+id_rsa
+id_ecdsa
+id_ed25519
+id_ed25519_sk
+*_rsa
+*_ed25519
+*-key.pem
+secrets/
+.secrets/
+
+# --- Doppler / injection ---
+# Token is env-only; keep doppler.yaml / .dopplerignore in repo if you use them
+.doppler-token
+doppler.token
+
+# --- Python (3.12+ per spec / tasks) ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.venv/
+venv/
+ENV/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+*.cover
+.hypothesis/
+.tox/
+nox-report/
+
+# --- Containers (Docker / Podman per tasks) ---
+**/.docker/
+*.log
+# Local compose overrides with secrets
+docker-compose.override.yml
+compose.override.yml
+
+# --- Generated overnight output (adjust path when orchestrator writes here) ---
+overnight-runs/
+overnight-artifacts/
+*.trace
+*.trace.gz
+
+# --- WireMock / Java tooling (T060 smoke tests may add) ---
+target/
+.gradle/
+*.class
+*.jar
+!**/gradle-wrapper.jar
+
+# --- Editors & OS ---
+.idea/
+# Ignore machine-specific VS Code config; commit shared JSON only if you choose
+.vscode/settings.json
+.vscode/launch.json
+.DS_Store
+Thumbs.db
+*~
+*.swp
+*.swo
+
+# --- Misc ---
+*.bak
+*.tmp
+.cache/
