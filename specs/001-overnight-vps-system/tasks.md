@@ -58,12 +58,14 @@ These tasks must be performed (or explicitly approved) by the user and cannot be
 
 **Purpose**: Initialize feature-level artifacts and quality baseline.
 
+> **Ordering:** **T055–T059** can be completed without a `night_coder` git checkout on the Droplet (Ralph installs from upstream; Doppler is account-side). **T060+** use repo files (for example `docs/superpowers/pilot/dtu/`). Before running T060, complete **`docs/superpowers/pilot/runbooks/vps-bootstrap.md` §12** (pilot repo clone on the VPS). If T056 was marked done before §12 existed, perform §12 as a catch-up step — no earlier task was wrong.
+
 - [x] T055 [USER] Provision VPS baseline (provider instance, SSH hardening, firewall, non-root operator) in `docs/superpowers/pilot/runbooks/vps-bootstrap.md`
-- [x] T056 Install runtime prerequisites (Python 3.12+, git, tmux, curl, jq) and record commands in `docs/superpowers/pilot/runbooks/vps-bootstrap.md`
+- [x] T056 Install runtime prerequisites (Python 3.12+, git, tmux, curl, jq); **clone this repo onto the VPS per `vps-bootstrap.md` §12** for pilot paths; record commands in `docs/superpowers/pilot/runbooks/vps-bootstrap.md`
 - [x] T057 Install and validate container runtime (Docker/Podman rootless profile) in `docs/superpowers/pilot/runbooks/vps-container-runtime.md`
 - [x] T058 Install Ralph orchestrator and verify CLI health checks in `docs/superpowers/pilot/runbooks/vps-ralph-install.md`
-- [ ] T059 [USER] Configure Doppler service-token injection flow for run environment in `docs/superpowers/pilot/runbooks/vps-secrets-bootstrap.md`
-- [ ] T060 [P] Install and smoke-test DTU/judge dependencies (WireMock, OpenJudge, Langfuse/OpenLLMetry hooks) in `docs/superpowers/pilot/runbooks/vps-dependency-smoke-tests.md`
+- [x] T059 [USER] Configure Doppler service-token injection flow for run environment in `docs/superpowers/pilot/runbooks/vps-secrets-bootstrap.md`
+- [ ] T060 [P] Install and smoke-test DTU/judge dependencies (WireMock, OpenJudge, Langfuse/OpenLLMetry hooks) in `docs/superpowers/pilot/runbooks/vps-dependency-smoke-tests.md` — **requires** `vps-bootstrap.md` §12 (repo checkout) and prior container-runtime / secrets runbooks
 - [ ] T061 Configure NTM guardrail runtime and baseline policies on VPS in `docs/superpowers/pilot/runbooks/vps-guardrails-bootstrap.md`
 - [ ] T062 [USER] Define external read-only scenario catalog location and access boundaries in `docs/superpowers/pilot/runbooks/scenario-catalog.md`
 - [ ] T063 Configure unattended scheduler (systemd timer/cron) for overnight run windows in `docs/superpowers/pilot/runbooks/vps-scheduler.md`

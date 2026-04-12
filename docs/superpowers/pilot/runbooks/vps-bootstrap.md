@@ -188,6 +188,7 @@ Next agent should complete these **without** storing secrets in git:
 | 2 | Mark **T055** satisfied in `specs/001-overnight-vps-system/tasks.md` if not already; proceed to **T056** (runtime prerequisites) using commands recorded in this file’s companion sections as needed. |
 | 3 | Append **T056** install commands to this runbook as they are executed (Python 3.12+, git, tmux, curl, jq) per tasks list. |
 | 4 | Verify billing alerts enabled in DO for credit/card safety (user setting; do not paste thresholds in repo). |
+| 5 | Before **T060** (WireMock / pilot `dtu/` compose), complete **[§12](#12-pilot-repository-checkout-on-the-vps)** so the Droplet has a checkout of this repo (Ralph **T058** alone does not clone it). |
 
 **References (external):**
 
@@ -248,9 +249,51 @@ jq --version
 
 ---
 
+## 12. Pilot repository checkout on the VPS
+
+**Why this section exists:** **T055–T059** (SSH, packages, Podman, Ralph CLI, Doppler) can all be completed **without** a copy of this repository on the Droplet — Ralph installs from upstream release/npm/cargo, not from `night_coder` paths. **T060 and later pilot runbooks** expect files that live **in git** here (for example `docs/superpowers/pilot/dtu/docker-compose.wiremock.yml`). If those paths are missing on the VPS, **nothing earlier in the runbook set failed**; the gap is simply **no checkout yet**.
+
+**When:** After [§11](#11-t056--runtime-prerequisites-python-312-git-tmux-curl-jq) (`git` works). **Before** [`vps-dependency-smoke-tests.md`](./vps-dependency-smoke-tests.md) (T060).
+
+**What “checkout” means:** A normal **`git clone`** (or `git pull` into an existing clone) of **this** repo — **not** `git init` on an empty folder.
+
+### 12.1 Clone into a predictable directory
+
+As `deploy` on the Droplet (replace the URL with **your** fork or upstream; use SSH or HTTPS depending on how you authenticate to GitHub):
+
+```bash
+cd ~
+git clone --depth 1 https://github.com/YOUR_ORG/night_coder.git night_coder
+```
+
+**Private repository:** use a [deploy key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/managing-deploy-keys/deploy-keys) (read-only) or HTTPS with a **credential helper / token** — never commit keys or embed tokens in the clone URL inside this repo’s docs.
+
+### 12.2 Verify paths used by later runbooks
+
+```bash
+export NIGHT_CODER_ROOT="$HOME/night_coder"
+test -f "$NIGHT_CODER_ROOT/docs/superpowers/pilot/dtu/docker-compose.wiremock.yml" \
+  && echo "OK: WireMock compose present"
+```
+
+**Expected:** `OK: WireMock compose present`.
+
+Optional — persist the variable for interactive shells:
+
+```bash
+grep -q 'NIGHT_CODER_ROOT=' ~/.bashrc 2>/dev/null || echo 'export NIGHT_CODER_ROOT="$HOME/night_coder"' >> ~/.bashrc
+```
+
+### 12.3 Updating the checkout
+
+Pilot runbooks assume you can **`git pull`** (or your approved update mechanism) when compose files or mappings change on `main` / your tracking branch.
+
+---
+
 ## Revision
 
 | Date | Notes |
 |------|--------|
 | 2026-04-11 | Initial pilot bootstrap from DigitalOcean + Ubuntu 24.04 operator setup. |
 | 2026-04-11 | §10 operator SSH verification; §11 T056 runtime prerequisites (apt + version checks). |
+| 2026-04-12 | §12 pilot repository checkout on the VPS (prerequisite for T060+ paths); §9 hand-off row 5. |

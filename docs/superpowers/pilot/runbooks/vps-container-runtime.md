@@ -6,6 +6,8 @@ Install and validate a **container runtime** on the overnight VPS for Docker/Pod
 
 **Prerequisites:** T056 complete (Python 3.12+, git, tmux, curl, jq on the Droplet).
 
+**Compose files in git:** T057 validates the engine only. **`podman-compose` paths** that live under `docs/superpowers/pilot/dtu/` still need a repo checkout on the VPS — see [`vps-bootstrap.md` §12](./vps-bootstrap.md#12-pilot-repository-checkout-on-the-vps) before T060.
+
 Do not commit registry passwords, `.env` files with secrets, or kubeconfigs to this repo.
 
 ---
@@ -198,6 +200,7 @@ Outbound HTTPS (443) must work for image pulls. Your Cloud Firewall should allow
 |------|--------|
 | 2026-04-11 | Initial T057 runbook: Podman rootless (recommended), Docker rootless and docker.io alternatives, validation and troubleshooting. |
 | 2026-04-11 | Pilot complete: Path A, `loginctl enable-linger deploy`, `podman-compose` installed; checklist §8 marked done. |
+| 2026-04-12 | Prerequisites: pointer to `vps-bootstrap.md` §12 for compose paths under `docs/superpowers/pilot/` (T060). |
 
 ---
 

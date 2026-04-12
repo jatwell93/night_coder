@@ -9,6 +9,8 @@ Install **Ralph Orchestrator** on the overnight VPS and verify **CLI health** be
 - [`vps-bootstrap.md`](./vps-bootstrap.md) — hardened Ubuntu 24.04, `deploy` user.  
 - [`vps-container-runtime.md`](./vps-container-runtime.md) — **Path A** (rootless Podman + linger + `podman-compose`) for this pilot.
 
+**Not a prerequisite here:** a `night_coder` git checkout on the VPS (Ralph installs from upstream). You **will** need [`vps-bootstrap.md` §12](./vps-bootstrap.md#12-pilot-repository-checkout-on-the-vps) before **T060** and other runbooks that read files under `docs/superpowers/pilot/`.
+
 Do **not** commit API keys, provider tokens, or `ralph.yml` secrets; use env injection / Doppler (T059).
 
 ---
@@ -260,3 +262,4 @@ The upstream **web dashboard** (`ralph web`) pulls **Rust RPC + Node frontend** 
 | 2026-04-11 | Initial T058 runbook: installer / npm / cargo paths; CLI health checks; optional AI CLI; align with current upstream Ralph CLI (not legacy Python v1). |
 | 2026-04-12 | §7.1: `ralph doctor` cwd / `-c ralph.yml` vs default Claude checks; Gemini CLI Node 20+ note; troubleshooting rows. |
 | 2026-04-12 | §7.2: two backends via `ralph run --backend` / edit `ralph.yml` / hat overrides; `init --force` note; OpenCode auth env hints. |
+| 2026-04-12 | Prerequisites: note that repo checkout (`vps-bootstrap.md` §12) is not required for Ralph install but is required before T060+. |

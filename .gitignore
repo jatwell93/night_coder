@@ -25,6 +25,8 @@ secrets/
 # Token is env-only; keep doppler.yaml / .dopplerignore in repo if you use them
 .doppler-token
 doppler.token
+doppler.yaml
+.doppler.yaml
 
 # --- Python (3.12+ per spec / tasks) ---
 __pycache__/
