@@ -259,11 +259,12 @@ jq --version
 
 ### 12.1 Clone into a predictable directory
 
-As `deploy` on the Droplet (replace the URL with **your** fork or upstream; use SSH or HTTPS depending on how you authenticate to GitHub):
+As `deploy` on the Droplet, clone the **same remote you use on your laptop** (the canonical `night_coder` repo if you own it — **no GitHub fork is required**). Use a **fork’s URL** only if that is already your normal workflow (e.g. PRs into an upstream you do not own). Use **SSH** or **HTTPS** depending on how the Droplet authenticates to GitHub.
 
 ```bash
 cd ~
-git clone --depth 1 https://github.com/YOUR_ORG/night_coder.git night_coder
+# Example — replace with your real clone URL (user/org repo is fine; fork URL only if you use forks):
+git clone --depth 1 https://github.com/YOUR_USER_OR_ORG/night_coder.git night_coder
 ```
 
 **Private repository:** use a [deploy key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/managing-deploy-keys/deploy-keys) (read-only) or HTTPS with a **credential helper / token** — never commit keys or embed tokens in the clone URL inside this repo’s docs.
@@ -286,6 +287,14 @@ grep -q 'NIGHT_CODER_ROOT=' ~/.bashrc 2>/dev/null || echo 'export NIGHT_CODER_RO
 
 ### 12.3 Updating the checkout
 
+**`git pull` must be run inside the clone**, not from `$HOME`. From `~` you will see `fatal: not a git repository` — that is expected until you `cd` into the repo.
+
+```bash
+cd "$HOME/night_coder"   # or: cd "$NIGHT_CODER_ROOT" after sourcing ~/.bashrc
+git status               # optional: confirm you are on the branch you expect
+git pull
+```
+
 Pilot runbooks assume you can **`git pull`** (or your approved update mechanism) when compose files or mappings change on `main` / your tracking branch.
 
 ---
@@ -297,3 +306,5 @@ Pilot runbooks assume you can **`git pull`** (or your approved update mechanism)
 | 2026-04-11 | Initial pilot bootstrap from DigitalOcean + Ubuntu 24.04 operator setup. |
 | 2026-04-11 | §10 operator SSH verification; §11 T056 runtime prerequisites (apt + version checks). |
 | 2026-04-12 | §12 pilot repository checkout on the VPS (prerequisite for T060+ paths); §9 hand-off row 5. |
+| 2026-04-12 | §12.1: clarify clone canonical repo when you own it; fork URL only if that is your workflow. |
+| 2026-04-12 | §12.3: explicit `cd` into clone before `git pull`; note fatal error from `~`. |

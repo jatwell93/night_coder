@@ -1,6 +1,7 @@
 services:
   wiremock-pilot:
-    image: wiremock/wiremock:latest
+    # Fully qualified for Podman (no unqualified-search registries in default registries.conf).
+    image: docker.io/wiremock/wiremock:latest
     ports:
       - "3000:8080"
     volumes:

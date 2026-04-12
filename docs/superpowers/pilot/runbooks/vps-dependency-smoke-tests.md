@@ -51,9 +51,13 @@ $NIGHT_CODER_ROOT/docs/superpowers/pilot/dtu/
 
 ## 3. WireMock (DTU)
 
-### 3.1 Security note (inbound)
+### 3.1 Security note (firewall + inbound)
 
-The pilot compose file publishes **host** port `3000`. Ensure the DigitalOcean (or other) **cloud firewall does not allow inbound TCP 3000** from the internet. Prefer SSH tunnel or operator-only access. For defense in depth you may change the port mapping to **loopback only** (example: `127.0.0.1:3000:8080` in `docker-compose.wiremock.yml`); coordinate that change with any automation that assumes `3000`.
+**Cloud firewall:** Inbound **only SSH (22)** and **no** inbound rule for **3000** is the right shape for this pilot: WireMock stays off the public internet even though the container maps `3000` on the host. **Outbound** “all TCP/UDP” (or permissive egress) matches [`vps-bootstrap.md`](./vps-bootstrap.md) and allows `apt`, `git`, and image pulls.
+
+**SSH sources:** If SSH is allowed from **all IPv4 / all IPv6**, that is common but noisier than restricting to **your home / bastion IP** (recommended in the bootstrap firewall table). Keep **key-based SSH only**; do not enable password auth.
+
+The pilot compose file publishes **host** port `3000`. Ensure the provider firewall still **does not** add a public rule for 3000. For defense in depth you may change the port mapping to **loopback only** (example: `127.0.0.1:3000:8080` in `docker-compose.wiremock.yml`).
 
 WireMock’s **Admin API** (`/__admin/...`) must never be intentionally exposed on a public interface (`dec-20260406-002`).
 
@@ -66,6 +70,12 @@ podman-compose -f docker-compose.wiremock.yml up -d
 ```
 
 If you use Docker instead of Podman, replace `podman-compose` with `docker compose` and the same `-f` path.
+
+### 3.2.1 Troubleshooting: `short-name "wiremock/wiremock" did not resolve` (Podman)
+
+Ubuntu’s default Podman has **no** unqualified-search registries, so `wiremock/wiremock:latest` is ambiguous. The compose file uses **`docker.io/wiremock/wiremock:latest`**. If you still see this error, confirm the `image:` line in [`../dtu/docker-compose.wiremock.yml`](../dtu/docker-compose.wiremock.yml) and run `git pull` in `~/night_coder`.
+
+**Alternative (host-wide):** add unqualified search registries in `/etc/containers/registries.conf` (see `man containers-registries.conf`). Prefer the fully qualified image in compose so the stack stays explicit.
 
 ### 3.3 Smoke: stubbed upstream
 
@@ -263,3 +273,4 @@ podman stats --no-stream   # or docker stats --no-stream
 |------|-------|
 | 2026-04-12 | Initial T060 runbook: WireMock compose smoke, OpenJudge venv smoke, OpenLLMetry console export smoke, Langfuse Phase 1/2 hooks and boundaries. |
 | 2026-04-12 | Prerequisites + §2: explicit `vps-bootstrap.md` §12 repo checkout before paths under `docs/superpowers/pilot/`. |
+| 2026-04-12 | §3.1: cloud firewall + SSH scope; §3.2.1 Podman short-name fix (`docker.io/...` in compose). |

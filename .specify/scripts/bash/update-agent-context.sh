@@ -257,6 +257,11 @@ get_project_structure() {
     fi
 }
 
+# sed s/// replacement treats & as the matched text; escape so literal ampersands (e.g. &&) survive.
+escape_sed_replacement() {
+    printf '%s' "$1" | sed 's/&/\\&/g'
+}
+
 get_commands_for_language() {
     local lang="$1"
     
@@ -268,7 +273,7 @@ get_commands_for_language() {
             echo "cargo test && cargo clippy"
             ;;
         *"JavaScript"*|*"TypeScript"*)
-            echo "npm test \\&\\& npm run lint"
+            echo "npm test && npm run lint"
             ;;
         *)
             echo "# Add commands for $lang"
@@ -310,9 +315,11 @@ create_new_agent_file() {
     
     local commands
     commands=$(get_commands_for_language "$NEW_LANG")
+    commands=$(escape_sed_replacement "$commands")
     
     local language_conventions
     language_conventions=$(get_language_conventions "$NEW_LANG")
+    language_conventions=$(escape_sed_replacement "$language_conventions")
     
     # Perform substitutions with error checking using safer approach
     # Escape special characters for sed by using a different delimiter or escaping
@@ -343,8 +350,13 @@ create_new_agent_file() {
         recent_change="- $escaped_branch: Added"
     fi
 
+    tech_stack=$(escape_sed_replacement "$tech_stack")
+    recent_change=$(escape_sed_replacement "$recent_change")
+    local escaped_project_name
+    escaped_project_name=$(escape_sed_replacement "$project_name")
+
     local substitutions=(
-        "s|\[PROJECT NAME\]|$project_name|"
+        "s|\[PROJECT NAME\]|$escaped_project_name|"
         "s|\[DATE\]|$current_date|"
         "s|\[EXTRACTED FROM ALL PLAN.MD FILES\]|$tech_stack|"
         "s|\[ACTUAL STRUCTURE FROM PLANS\]|$project_structure|g"
