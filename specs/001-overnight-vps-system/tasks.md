@@ -65,8 +65,8 @@ These tasks must be performed (or explicitly approved) by the user and cannot be
 - [x] T057 Install and validate container runtime (Docker/Podman rootless profile) in `docs/superpowers/pilot/runbooks/vps-container-runtime.md`
 - [x] T058 Install Ralph orchestrator and verify CLI health checks in `docs/superpowers/pilot/runbooks/vps-ralph-install.md`
 - [x] T059 [USER] Configure Doppler service-token injection flow for run environment in `docs/superpowers/pilot/runbooks/vps-secrets-bootstrap.md`
-- [ ] T060 [P] Install and smoke-test DTU/judge dependencies (WireMock, OpenJudge, Langfuse/OpenLLMetry hooks) in `docs/superpowers/pilot/runbooks/vps-dependency-smoke-tests.md` — **requires** `vps-bootstrap.md` §12 (repo checkout) and prior container-runtime / secrets runbooks
-- [ ] T061 Configure NTM guardrail runtime and baseline policies on VPS in `docs/superpowers/pilot/runbooks/vps-guardrails-bootstrap.md`
+- [x] T060 [P] Install and smoke-test DTU/judge dependencies (WireMock, OpenJudge, Langfuse/OpenLLMetry hooks) in `docs/superpowers/pilot/runbooks/vps-dependency-smoke-tests.md` — **requires** `vps-bootstrap.md` §12 (repo checkout) and prior container-runtime / secrets runbooks
+- [x] T061 Configure NTM guardrail runtime and baseline policies on VPS in `docs/superpowers/pilot/runbooks/vps-guardrails-bootstrap.md`
 - [ ] T062 [USER] Define external read-only scenario catalog location and access boundaries in `docs/superpowers/pilot/runbooks/scenario-catalog.md`
 - [ ] T063 Configure unattended scheduler (systemd timer/cron) for overnight run windows in `docs/superpowers/pilot/runbooks/vps-scheduler.md`
 - [ ] T001 Create runtime documentation skeleton in `docs/superpowers/pilot/runbooks/README.md`

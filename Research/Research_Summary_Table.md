@@ -6,6 +6,8 @@
 
 **DTU expanded landscape** (WireMock, Hoverfly, Prism, Microcks, multi-protocol mocks, etc.): [`research_overnight_stack_web/findings_dtu_extended_landscape.md`](./research_overnight_stack_web/findings_dtu_extended_landscape.md).
 
+**Fabro / Kilroy** (DOT Attractor-style orchestration; post-pilot **orchestration swap-in** while keeping DTU, OpenJudge, NTM, Langfuse at integration boundaries): [`../research_fabro_kilroy_pilot/research_report.md`](../research_fabro_kilroy_pilot/research_report.md) · [plan](../research_fabro_kilroy_pilot/research_plan.md) · [Fabro findings](../research_fabro_kilroy_pilot/findings_fabro.md) · [Kilroy findings](../research_fabro_kilroy_pilot/findings_kilroy.md).
+
 **Quint pillar sprints (repository root):** Later focused web research for pilot decisions, each with `research_plan.md`, `findings_*.md`, and `research_report.md` (see `docs/superpowers/pilot/*/IMPLEMENTATION-BRIEF.md` for links). Folders: [`research_model_provider_pillar/`](../research_model_provider_pillar/), [`research_memory_pillar/`](../research_memory_pillar/), [`research_execution_sandbox/`](../research_execution_sandbox/), [`research_secrets_iam/`](../research_secrets_iam/), [`research_artifact_registry/`](../research_artifact_registry/). *Planner* (`dec-20260406-005`) drew on existing `Research/` notes and Spec Kit upstream rather than a separate sprint folder.
 
 ---
@@ -29,6 +31,7 @@ For each topic, open the linked file under `Research/` for the full write-up.
 | **Orchestration** | Gas Town | `gas_town_deepseek.md`, `gas_town_perplexity.md`, `gas_town_deepwiki.md` | Mayor / polecats / beads / convoys — orchestration + persistence metaphor | **Attractor** + task queue + git checkpoints; scale down for cost |
 | **Orchestration** | oh-my-opencode | `oh_my_opencode_deepwiki.md` | Phased opencode plugin: Prometheus → Atlas, ralph-loop, hooks | **Attractor** strong; **CXDB**/audit weak; **Leash** shallow; no DTU; Momus ≠ outcome judge |
 | **Orchestration** | Ralph orchestrator | `ralph-orchestrator.md` | Ralph loop, hats, `.agent/events.jsonl`, iteration/cost/runtime limits | **Attractor** + **CXDB** (files) + **Leash**; no DTU/judge |
+| **Orchestration** | Fabro / Kilroy | [`../research_fabro_kilroy_pilot/research_report.md`](../research_fabro_kilroy_pilot/research_report.md) | **Graphviz DOT** pipelines + coding-agent nodes + human gates: **Fabro** (Rust, Daytona sandboxes, REST/SSE + UI); **Kilroy** (Go, StrongDM Attractor + **CXDB**, git worktree per run) | **Attractor**-shaped; **swap** for Ralph after pilot **without** replacing DTU / OpenJudge / NTM if wired at boundaries ([`findings_fabro`](../research_fabro_kilroy_pilot/findings_fabro.md), [`findings_kilroy`](../research_fabro_kilroy_pilot/findings_kilroy.md)) |
 | **Orchestration** | Ruflo (claude-flow) | `ruflo_deepwiki.md` | Daemon + headless Claude Code workers, anti-drift topology, vector memory | **Attractor** + overnight daemon; depends on Claude Code / API |
 | **Orchestration** | Agent Flywheel (ACFS) | `agent_flywheel_deepwiki.md`, `agent_flywheel_perplexity.md`, `agent_flywheel_perplexity_updated.md`, `agent_flywheel_gemini.md` | NTM, MCP mail / leases, CASS memory, UBS | Coordination + **Leash**-ish; still pays for underlying agent CLIs |
 | **Guardrails & sessions** | NTM | `ntm.md` | Tmux agent cockpit: audit logs, policy engine (block dangerous git/rm), pipeline/swarm YAML | **Leash** + **CXDB** strong; **Attractor** partial (session-oriented) |
@@ -72,6 +75,8 @@ For each topic, open the linked file under `Research/` for the full write-up.
 | **Ralph** | Bash/agent loop | Hats | JSONL + scratchpad | Caps: iterations, time, cost |
 | **Ruflo** | Background daemon | Workers + topology | PID file, logs, memory pipeline | Anti-drift coordinator |
 | **Agent Flywheel** | NTM + sessions | Swarm / mail | Leases, CASS | Easiest setup per notes; no built-in judge |
+| **Fabro** | Yes (API + cloud sandboxes) | Graph nodes / ensembles | Git checkpoints + retros | Replace **orchestration spine** only; keep DTU, judge, NTM as adjacent services |
+| **Kilroy** | Yes (CLI + optional `serve`) | Graph stages | CXDB + run-branch git commits | Same **integration** story as Fabro; local-first + CXDB ops |
 
 ---
 
@@ -79,7 +84,7 @@ For each topic, open the linked file under `Research/` for the full write-up.
 
 | Piece | StrongDM idea | Well-covered in research by |
 | ----- | ------------- | ---------------------------- |
-| **Attractor** | Phased autonomous execution | OpenHands, CrewAI, AG2/LangGraph, Deer Flow, Gas Town, Ralph, oh-my-opencode, Ruflo |
+| **Attractor** | Phased autonomous execution | OpenHands, CrewAI, AG2/LangGraph, Deer Flow, Gas Town, Ralph, Fabro, Kilroy, oh-my-opencode, Ruflo |
 | **Leash** | Block dangerous tools / abuse | NTM (strong); Ralph (limits); oh-my-opencode (hooks only); Ruflo (sandbox modes) |
 | **DTU** | Local mocks / twins | Mockoon, Keploy, MSW; WireMock, Hoverfly, MockServer, Mountebank, Prism, Pact stub, Microcks, Imposter, Karate mock, Mockintosh ([`findings_dtu_extended_landscape.md`](./research_overnight_stack_web/findings_dtu_extended_landscape.md)); gap wave 2: LocalStack, Browserless / Playwright |
 | **LLM judge** | Scenario satisfaction | OpenJudge, Langfuse evals, build-yourself harness; not Momus (plan-only) |
@@ -100,6 +105,7 @@ For each topic, open the linked file under `Research/` for the full write-up.
 | `gas_town_deepseek.md`, `gas_town_perplexity.md`, `gas_town_deepwiki.md` | Orchestration |
 | `oh_my_opencode_deepwiki.md` | Orchestration |
 | `ralph-orchestrator.md` | Orchestration + CXDB + Leash |
+| [`../research_fabro_kilroy_pilot/research_report.md`](../research_fabro_kilroy_pilot/research_report.md) | Orchestration (DOT / Attractor); post-pilot Ralph alternative |
 | `ruflo_deepwiki.md` | Orchestration + overnight daemon |
 | `agent_flywheel_deepwiki.md`, `agent_flywheel_perplexity.md`, `agent_flywheel_perplexity_updated.md`, `agent_flywheel_gemini.md` | Orchestration / coordination |
 | `ntm.md` | Leash + CXDB |
@@ -116,7 +122,7 @@ For each topic, open the linked file under `Research/` for the full write-up.
 ## 5. Suggested planning order
 
 1. **Anchor on outcomes**: external scenarios + judge (`strongdm_deepseek.md`, `build-yourself-one.md`, `OpenJudge.md`).
-2. **Pick one orchestration spine**: OpenHands *or* CrewAI+LangGraph *or* Ralph *or* oh-my-opencode — match to how much you want GUI vs Python vs opencode.
+2. **Pick one orchestration spine**: OpenHands *or* CrewAI+LangGraph *or* Ralph *or* **Fabro / Kilroy** (DOT-native) *or* oh-my-opencode — match to how much you want GUI vs Python vs opencode vs graph-as-code; after the pilot, **swap the spine** without discarding DTU, OpenJudge, or NTM if you keep clear **integration seams** ([`research_fabro_kilroy_pilot/research_report.md`](../research_fabro_kilroy_pilot/research_report.md)).
 3. **Add DTU** per stack: start from [`findings_dtu_extended_landscape.md`](./research_overnight_stack_web/findings_dtu_extended_landscape.md) (Mockoon, WireMock, Hoverfly, Keploy, MSW, Prism, …); add LocalStack / Browserless when AWS- or browser-shaped deps appear ([`gap_wave2/findings_gap_dtu_localstack_browserless.md`](./research_overnight_stack_web/gap_wave2/findings_gap_dtu_localstack_browserless.md)).
 4. **Add Leash** where the harness is weak (NTM, Ralph limits, custom allowlists).
 5. **Instrument** (Langfuse and/or OpenLLMetry) so morning review replaces live watching.
@@ -130,3 +136,4 @@ This document is the navigation layer; depth stays in the per-topic files above.
 - [Web research report](research_overnight_stack_web/research_report.md) · [Research plan](research_overnight_stack_web/research_plan.md)
 - [Gap wave 2 synthesis](research_overnight_stack_web/gap_wave2/research_report_gaps_wave2.md)
 - [DTU extended landscape](research_overnight_stack_web/findings_dtu_extended_landscape.md)
+- [Fabro / Kilroy vs pilot](../research_fabro_kilroy_pilot/research_report.md) · [plan](../research_fabro_kilroy_pilot/research_plan.md)
