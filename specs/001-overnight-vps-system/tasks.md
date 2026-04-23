@@ -21,6 +21,12 @@ These tasks must be performed (or explicitly approved) by the user and cannot be
 - **T055 [USER]**: Provision VPS provider instance, account/billing, network/security baseline, and operator access.
 - **T059 [USER]**: Create Doppler org/project/service token and approve secret-scope policy.
 - **T062 [USER]**: Approve external scenario catalog host/repo location and access control boundary.
+- **T077 [USER]**: Approve model budget caps and fallback policy (financial/risk decision).
+- **T078 [USER]**: Provide provider API credentials (OpenRouter / judge LLM / etc.) via Doppler — credential handling.
+- **T079 [USER]**: Author and approve initial guardrail blocklist policy (security decision).
+- **T083 [USER]**: Author first production scenario(s) (requires real product/domain judgement).
+- **T087 [USER]**: Author first DTU behavior profile(s) (requires real dependency-behaviour knowledge).
+- **T096 [USER]**: Execute go/no-go decision and enable scheduler for live unattended runs (deployment gate).
 
 ### USER/Agent Handoff Details
 
@@ -54,6 +60,65 @@ These tasks must be performed (or explicitly approved) by the user and cannot be
   - Add immutability boundary checks in integration tests.
   - Document catalog structure and update process in `docs/superpowers/pilot/runbooks/scenario-catalog.md`.
 
+#### T077 [USER] Model Budget and Fallback Policy
+- **User actions**
+  - Decide per-run and nightly token/cost caps.
+  - Decide fallback model order and degraded-mode behaviour.
+  - Approve kill-switch thresholds for cost or rate-limit breaches.
+- **Agent follow-up**
+  - Encode budget caps into model policy adapter config.
+  - Add breach detection and fail-safe shutdown paths.
+  - Document policy in `docs/superpowers/pilot/runbooks/budget-policy.md`.
+
+#### T078 [USER] Provider API Credentials
+- **User actions**
+  - Create/retrieve OpenRouter (and any fallback provider) API keys.
+  - Store keys in Doppler project created in T059.
+  - Approve which runs/environments may use which credential scopes.
+- **Agent follow-up**
+  - Reference credentials via Doppler in run scripts (no plaintext in repo).
+  - Add startup credential validation with clear missing-key errors.
+  - Document key rotation in the secrets runbook.
+
+#### T079 [USER] Initial Guardrail Blocklist
+- **User actions**
+  - Review and approve the initial NTM blocklist entries.
+  - Approve override/bypass procedure for legitimate operator intervention.
+  - Sign off that offline/online profile patterns are acceptable.
+- **Agent follow-up**
+  - Encode approved patterns in `docs/superpowers/pilot/config/guardrail-policy.yaml`.
+  - Wire policy loader (T018) to read from that path.
+  - Add regression tests for approved blocklist entries.
+
+#### T083 [USER] Initial Production Scenario Authoring
+- **User actions**
+  - Draft 3-5 outcome-based scenarios for the target feature/project.
+  - Store under the external catalog location approved in T062.
+  - Confirm scenarios are outside the coding agent's writable scope.
+- **Agent follow-up**
+  - Validate each scenario conforms to schema (title, outcomes, evidence, DTU deps).
+  - Add scenario smoke-tests in integration suite.
+  - Reference scenario IDs in quickstart and runbooks.
+
+#### T087 [USER] Initial DTU Behaviour Profile(s)
+- **User actions**
+  - Identify which external dependencies need mocking for the first scenarios.
+  - Draft WireMock (or equivalent) stub definitions with expected responses.
+  - Approve fidelity vs minimal-mock trade-offs.
+- **Agent follow-up**
+  - Load DTU profiles in `src/services/wiremock_dtu_service.py`.
+  - Add DTU health checks and startup validation.
+  - Document profile update process.
+
+#### T096 [USER] Go/No-Go for Live Unattended Runs
+- **User actions**
+  - Review supervised dry-run results (T095).
+  - Confirm budget, guardrail, scenario, and DTU readiness.
+  - Flip scheduler enable switch in the VPS scheduler runbook.
+- **Agent follow-up**
+  - Record go/no-go outcome and trigger timestamp.
+  - Monitor first live run telemetry and report back next morning.
+
 ## Phase 1: Setup (Shared Infrastructure)
 
 **Purpose**: Initialize feature-level artifacts and quality baseline.
@@ -67,14 +132,14 @@ These tasks must be performed (or explicitly approved) by the user and cannot be
 - [x] T059 [USER] Configure Doppler service-token injection flow for run environment in `docs/superpowers/pilot/runbooks/vps-secrets-bootstrap.md`
 - [x] T060 [P] Install and smoke-test DTU/judge dependencies (WireMock, OpenJudge, Langfuse/OpenLLMetry hooks) in `docs/superpowers/pilot/runbooks/vps-dependency-smoke-tests.md` — **requires** `vps-bootstrap.md` §12 (repo checkout) and prior container-runtime / secrets runbooks
 - [x] T061 Configure NTM guardrail runtime and baseline policies on VPS in `docs/superpowers/pilot/runbooks/vps-guardrails-bootstrap.md`
-- [ ] T062 [USER] Define external read-only scenario catalog location and access boundaries in `docs/superpowers/pilot/runbooks/scenario-catalog.md`
-- [ ] T063 Configure unattended scheduler (systemd timer/cron) for overnight run windows in `docs/superpowers/pilot/runbooks/vps-scheduler.md`
-- [ ] T001 Create runtime documentation skeleton in `docs/superpowers/pilot/runbooks/README.md`
-- [ ] T002 Create trial configuration directory in `docs/superpowers/pilot/config/README.md`
-- [ ] T003 [P] Create testing directory placeholders in `tests/unit/.gitkeep`
-- [ ] T004 [P] Create testing directory placeholders in `tests/integration/.gitkeep`
-- [ ] T005 [P] Create testing directory placeholders in `tests/contract/.gitkeep`
-- [ ] T006 Configure quality check script reference in `docs/superpowers/pilot/runbooks/quality-gates.md`
+- [x] T062 [USER] Define external read-only scenario catalog location and access boundaries in `docs/superpowers/pilot/runbooks/scenario-catalog.md`
+- [x] T063 Configure unattended scheduler (systemd timer/cron) for overnight run windows in `docs/superpowers/pilot/runbooks/vps-scheduler.md`
+- [x] T001 Create runtime documentation skeleton in `docs/superpowers/pilot/runbooks/README.md`
+- [x] T002 Create trial configuration directory in `docs/superpowers/pilot/config/README.md`
+- [x] T003 [P] Create testing directory placeholders in `tests/unit/.gitkeep`
+- [x] T004 [P] Create testing directory placeholders in `tests/integration/.gitkeep`
+- [x] T005 [P] Create testing directory placeholders in `tests/contract/.gitkeep`
+- [x] T006 Configure quality check script reference in `docs/superpowers/pilot/runbooks/quality-gates.md`
 
 ---
 
@@ -84,18 +149,24 @@ These tasks must be performed (or explicitly approved) by the user and cannot be
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T007 Define canonical run status taxonomy in `docs/superpowers/pilot/runbooks/status-taxonomy.md`
-- [ ] T008 Define shared reason-code taxonomy for guardrails and judge in `docs/superpowers/pilot/runbooks/reason-codes.md`
-- [ ] T009 Implement run manifest schema validator in `src/lib/manifest_validation.py`
-- [ ] T010 Implement judge verdict schema validator in `src/lib/verdict_validation.py`
-- [ ] T011 [P] Implement artifact path resolver utility in `src/lib/artifact_paths.py`
-- [ ] T012 [P] Implement run id and timestamp utility in `src/lib/run_identity.py`
-- [ ] T013 Implement structured event envelope utility in `src/lib/event_envelope.py`
-- [ ] T049 [P] Add unit test for model role-policy adapter with fallback in `tests/unit/test_model_policy_adapter.py`
-- [ ] T050 Implement model/provider role-policy adapter with fallback handling in `src/services/model_policy_service.py`
-- [ ] T064 [P] Add unit test for telemetry/trace secret redaction rules in `tests/unit/test_secret_redaction.py`
-- [ ] T065 Implement shared secret redaction filter for logs/traces/events in `src/lib/secret_redaction.py`
-- [ ] T014 Configure feature-level quality and test command matrix in `docs/superpowers/pilot/runbooks/verification-matrix.md`
+- [x] T007 Define canonical run status taxonomy in `docs/superpowers/pilot/runbooks/status-taxonomy.md`
+- [x] T008 Define shared reason-code taxonomy for guardrails and judge in `docs/superpowers/pilot/runbooks/reason-codes.md`
+- [x] T009 Implement run manifest schema validator in `src/lib/manifest_validation.py`
+- [x] T010 Implement judge verdict schema validator in `src/lib/verdict_validation.py`
+- [x] T011 [P] Implement artifact path resolver utility in `src/lib/artifact_paths.py`
+- [x] T012 [P] Implement run id and timestamp utility in `src/lib/run_identity.py`
+- [x] T013 Implement structured event envelope utility in `src/lib/event_envelope.py`
+- [x] T049 [P] Add unit test for model role-policy adapter with fallback in `tests/unit/test_model_policy_adapter.py`
+- [x] T050 Implement model/provider role-policy adapter with fallback handling in `src/services/model_policy_service.py`
+- [x] T064 [P] Add unit test for telemetry/trace secret redaction rules in `tests/unit/test_secret_redaction.py`
+- [x] T065 Implement shared secret redaction filter for logs/traces/events in `src/lib/secret_redaction.py`
+- [x] T073 Create Python package scaffolding and dev tooling config in `pyproject.toml` and `requirements-dev.txt`
+- [x] T074 Configure pytest, coverage, and `tests/conftest.py` in `pyproject.toml` / `tests/conftest.py`
+- [x] T075 Implement structured logger bootstrap with redaction hook in `src/lib/logging_setup.py`
+- [x] T076 Implement run configuration loader (paths, profile, budget, policy refs) in `src/lib/run_config.py`
+- [ ] T077 [USER] Approve and record model budget caps, fallback order, and kill-switch thresholds in `docs/superpowers/pilot/runbooks/budget-policy.md`
+- [ ] T078 [USER] Provide provider API credentials (OpenRouter / judge LLM) via Doppler and document required keys in `docs/superpowers/pilot/runbooks/vps-secrets-bootstrap.md`
+- [x] T014 Configure feature-level quality and test command matrix in `docs/superpowers/pilot/runbooks/verification-matrix.md` (depends on T073/T074)
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -125,6 +196,10 @@ These tasks must be performed (or explicitly approved) by the user and cannot be
 - [ ] T022 [US1] Implement blocked-action logging with reason codes in `src/services/guardrail_audit_service.py`
 - [ ] T023 [US1] Wire profile selection (`offline` default) in `src/services/run_profile_service.py`
 - [ ] T052 [US1] Implement orchestrator iteration controller with satisfaction-based loop termination in `src/services/orchestrator_loop_service.py`
+- [ ] T079 [USER] Author initial guardrail blocklist policy file in `docs/superpowers/pilot/config/guardrail-policy.yaml`
+- [ ] T080 [US1] Implement NTM adapter wiring for command interception in `src/services/ntm_adapter.py`
+- [ ] T081 [US1] Implement Ralph orchestrator launch integration in `src/services/ralph_launcher.py`
+- [ ] T082 [US1] Wire run launcher into scheduler wrapper script (replace T020 placeholder) in `~/night_coder/scripts/run-overnight.sh` (document diff in `docs/superpowers/pilot/runbooks/vps-scheduler.md`)
 - [ ] T024 [US1] Document US1 operator flow in `docs/superpowers/pilot/runbooks/us1-safe-execution.md`
 
 **Checkpoint**: User Story 1 should be fully functional and independently testable.
@@ -152,6 +227,10 @@ These tasks must be performed (or explicitly approved) by the user and cannot be
 - [ ] T031 [US2] Implement immutable harness path guard in `src/services/judge_harness_guard_service.py`
 - [ ] T032 [US2] Integrate verdict generation into run completion pipeline in `src/services/run_completion_service.py`
 - [ ] T067 [US2] Implement judge-unavailable fallback handler setting run state to `evaluation-pending` in `src/services/judge_fallback_service.py`
+- [ ] T083 [USER] Author first production scenario(s) under external catalog path defined in T062 (3-5 outcome-based scenarios)
+- [ ] T084 [US2] Implement OpenJudge adapter with structured verdict normalization in `src/services/openjudge_adapter.py`
+- [ ] T085 [US2] Create and version judge prompt template in `docs/superpowers/pilot/judge/prompt-template.md`
+- [ ] T086 [US2] Implement LLM budget/cost guard for judge calls (respects T077 caps) in `src/services/judge_budget_service.py`
 - [ ] T033 [US2] Document US2 reviewer flow in `docs/superpowers/pilot/runbooks/us2-outcome-judging.md`
 
 **Checkpoint**: User Stories 1 and 2 both operate independently with trustworthy verdict outputs.
@@ -185,6 +264,11 @@ These tasks must be performed (or explicitly approved) by the user and cannot be
 - [ ] T054 [US3] Implement morning review report assembler in `src/services/morning_review_service.py`
 - [ ] T071 [US3] Implement scenario catalog loader with read-only boundary enforcement in `src/services/scenario_catalog_service.py`
 - [ ] T072 [US3] Implement memory relevance and staleness filtering before writeback/reuse in `src/services/memory_relevance_service.py`
+- [ ] T087 [USER] Author first DTU behaviour profile(s) under `docs/superpowers/pilot/dtu/` (WireMock stub definitions for scenarios from T083)
+- [ ] T088 [US3] Implement WireMock DTU configuration loader and lifecycle control in `src/services/wiremock_dtu_service.py`
+- [ ] T089 [US3] Bootstrap mcp-memory-service (sqlite_vec storage path, health check, startup contract) in `docs/superpowers/pilot/runbooks/memory-service-bootstrap.md`
+- [ ] T090 [US3] Implement OTEL exporter wiring for Langfuse (phase 1 files, phase 2 UI) in `src/lib/otel_setup.py`
+- [ ] T091 [US3] Document Langfuse self-hosted phase 2 deployment in `docs/superpowers/pilot/runbooks/langfuse-bootstrap.md`
 - [ ] T043 [US3] Document US3 continuous validation flow in `docs/superpowers/pilot/runbooks/us3-dtu-memory-loop.md`
 
 **Checkpoint**: All user stories are independently functional and traceable.
@@ -200,6 +284,11 @@ These tasks must be performed (or explicitly approved) by the user and cannot be
 - [ ] T046 Validate performance budget and review-time targets in `tests/integration/test_trial_performance_budgets.py`
 - [ ] T047 Validate quickstart end-to-end flow in `specs/001-overnight-vps-system/quickstart.md`
 - [ ] T048 Run full verification matrix and record outcomes in `docs/superpowers/pilot/runbooks/verification-results.md`
+- [ ] T092 [P] Create morning-review report template (pairs with T054) in `docs/superpowers/pilot/runbooks/morning-review-template.md`
+- [ ] T093 [P] Create runbook index and navigation in `docs/superpowers/pilot/runbooks/INDEX.md`
+- [ ] T094 Create supervised dry-run checklist in `docs/superpowers/pilot/runbooks/supervised-dry-run.md`
+- [ ] T095 Execute supervised dry run and record findings in `docs/superpowers/pilot/runbooks/dry-run-results.md`
+- [ ] T096 [USER] Execute go/no-go decision and enable scheduler for live unattended runs (updates `docs/superpowers/pilot/runbooks/vps-scheduler.md` §8)
 
 ---
 
@@ -207,12 +296,13 @@ These tasks must be performed (or explicitly approved) by the user and cannot be
 
 ### Phase Dependencies
 
-- **Setup (Phase 1)**: No dependencies - start immediately
-- **Foundational (Phase 2)**: Depends on Setup completion (including VPS bootstrap T055-T060) - blocks all user stories
+- **Setup (Phase 1)**: No dependencies - start immediately (T001-T006 + T055-T063)
+- **Foundational (Phase 2)**: Depends on Setup completion. Includes package scaffolding (T073), tooling (T074), logger (T075), config (T076), and user-required budget (T077) + credentials (T078). Blocks all user stories.
 - **User Story Phases (Phase 3-5)**: Depend on Foundational completion
-  - US1 is MVP-first and should be completed first
-  - US2 and US3 can start after foundation, but US2 should precede full US3 trial closure
-- **Polish (Phase 6)**: Depends on target user stories completed
+  - US1 is MVP-first. T079 (policy content) must precede T018 policy loader wiring. T082 (wrapper script wiring) depends on T020 + T081.
+  - US2 depends on US1 + foundational tests. T083 (scenario authoring) must precede T028 scenario evidence assembler wiring.
+  - US3 depends on US1 + US2. T087 (DTU profile authoring) must precede T088 (WireMock loader); T091 Langfuse Phase 2 depends on T090 OTEL wiring.
+- **Polish (Phase 6)**: Depends on US1+US2+US3 complete. T095 dry-run requires T044-T048 documentation; T096 (user go/no-go) depends on T095 results.
 
 ### User Story Dependencies
 
@@ -233,8 +323,12 @@ These tasks must be performed (or explicitly approved) by the user and cannot be
 - Platform bootstrap T060 can run in parallel once T055-T059 complete
 - Bootstrap tasks T061-T063 can proceed in parallel after base VPS provisioning T055
 - Foundational utility services T011 and T012 can run in parallel
+- T073 (pyproject) and T075 (logger) can run in parallel once scaffolding decision is made
+- T077 (USER budget policy) and T078 (USER credentials) can happen in parallel while agent works on T073-T076
+- T083 (USER scenario authoring) and T087 (USER DTU authoring) can be done by the user in parallel
 - Contract and integration tests within each story marked [P] can run in parallel
 - Core service tasks marked [P] in each story can be split across contributors
+- Polish tasks T092 and T093 can run in parallel; T094/T095/T096 are sequential
 
 ---
 

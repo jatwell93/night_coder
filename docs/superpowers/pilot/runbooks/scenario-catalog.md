@@ -238,6 +238,7 @@ SCENARIO_CATALOG_PATH=/home/deploy/night_coder/docs/superpowers/pilot/scenarios
 Verify (operator shell):
 
 ```bash
+export SCENARIO_CATALOG_PATH=/home/deploy/night_coder/docs/superpowers/pilot/scenarios
 echo "${SCENARIO_CATALOG_PATH:-not set}"
 ls "${SCENARIO_CATALOG_PATH}"
 ```

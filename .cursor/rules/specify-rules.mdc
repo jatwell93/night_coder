@@ -21,7 +21,14 @@ tests/
 
 ## Commands
 
-cd src && pytest && ruff check .
+Run from repo root (activate `.venv/bin/activate` first, or prefix with `.venv/bin/`):
+
+- `pytest -q` — full test suite (tests live under `tests/`; `src/` is on pythonpath via `pyproject.toml`).
+- `ruff check .` — lint across repo.
+- `ruff format --check .` — format check.
+- `mypy src` — type check services/libs.
+
+See `docs/superpowers/pilot/runbooks/quality-gates.md` for the full command matrix and story-scoped selectors.
 
 ## Code Style
 

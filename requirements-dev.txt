@@ -1,0 +1,12 @@
+# Development dependencies for the Night Coder pilot.
+#
+# Canonical source of truth: the [project.optional-dependencies.dev] table in
+# pyproject.toml. This file only exists for operators who prefer
+# ``pip install -r requirements-dev.txt`` over ``pip install -e .[dev]``.
+#
+# Usage:
+#   python3.12 -m venv .venv
+#   source .venv/bin/activate
+#   pip install -r requirements-dev.txt
+
+-e .[dev]

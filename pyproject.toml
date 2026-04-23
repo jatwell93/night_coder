@@ -1,0 +1,116 @@
+[project]
+name = "night-coder"
+version = "0.1.0"
+description = "Overnight VPS coding system — orchestrator, guardrails, judge, DTU, memory, telemetry."
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "Proprietary" }
+authors = [{ name = "Night Coder Pilot" }]
+
+dependencies = [
+    "jsonschema>=4.21",
+    "rfc3339-validator>=0.1.4",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-cov>=5.0",
+    "ruff>=0.5",
+    "mypy>=1.10",
+    "types-jsonschema>=4.21",
+]
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Ruff — lint + format. Ruleset: Option A (see quality-gates.md).
+# ─────────────────────────────────────────────────────────────────────────────
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+src = ["src", "tests"]
+extend-exclude = [
+    "Research",
+    "docs",
+    ".specify",
+    ".quint",
+    ".agents",
+]
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "F",   # pyflakes
+    "I",   # isort (import sorting)
+    "N",   # pep8-naming
+    "UP",  # pyupgrade
+    "B",   # flake8-bugbear
+    "S",   # flake8-bandit (security)
+    "SIM", # flake8-simplify
+    "RUF", # ruff-specific
+]
+ignore = [
+    "S101",  # assert in tests is fine
+    "E501",  # line too long — handled by formatter, not lint
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = [
+    "S",     # relax security warnings in tests
+    "N802",  # allow non-snake_case fixture/test names occasionally
+]
+"src/cli/**" = [
+    "T201",  # print() is fine in CLI entrypoints
+]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Mypy — type checking. Strict mode enabled in Phase 6 (T046+).
+# ─────────────────────────────────────────────────────────────────────────────
+[tool.mypy]
+python_version = "3.12"
+strict = false
+warn_unused_configs = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+check_untyped_defs = true
+no_implicit_optional = true
+mypy_path = "src"
+explicit_package_bases = true
+namespace_packages = true
+# Tests are excluded from mypy by default; re-add a tests override here and
+# pass ``mypy src tests`` explicitly once test type hints become useful.
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Pytest — test discovery.
+# ─────────────────────────────────────────────────────────────────────────────
+[tool.pytest.ini_options]
+minversion = "8.0"
+pythonpath = ["src"]
+testpaths = ["tests"]
+addopts = [
+    "-ra",
+    "--strict-markers",
+    "--strict-config",
+]
+markers = [
+    "unit: fast, isolated unit tests",
+    "integration: multi-component integration tests",
+    "contract: schema/contract compliance tests",
+    "us1: User Story 1 — Safe Overnight Execution",
+    "us2: User Story 2 — External Outcome-Based Judging",
+    "us3: User Story 3 — Continuous Validation with DTU and Memory",
+]
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
