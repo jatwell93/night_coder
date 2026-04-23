@@ -42,6 +42,7 @@ and is intended to be followed top-to-bottom on a fresh VPS.
 | T007 | [`status-taxonomy.md`](./status-taxonomy.md) | Canonical run status vocabulary. |
 | T008 | [`reason-codes.md`](./reason-codes.md) | Shared guardrail and judge reason codes. |
 | T014 | [`verification-matrix.md`](./verification-matrix.md) | Feature-level quality and test command matrix. |
+| T077 | [`budget-policy.md`](./budget-policy.md) | Operator-approved model budget caps, fallback order, and kill-switch thresholds (AUD). |
 
 ## Phase 3+ — user-story runbooks (placeholders)
 

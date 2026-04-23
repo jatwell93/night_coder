@@ -164,8 +164,8 @@ These tasks must be performed (or explicitly approved) by the user and cannot be
 - [x] T074 Configure pytest, coverage, and `tests/conftest.py` in `pyproject.toml` / `tests/conftest.py`
 - [x] T075 Implement structured logger bootstrap with redaction hook in `src/lib/logging_setup.py`
 - [x] T076 Implement run configuration loader (paths, profile, budget, policy refs) in `src/lib/run_config.py`
-- [ ] T077 [USER] Approve and record model budget caps, fallback order, and kill-switch thresholds in `docs/superpowers/pilot/runbooks/budget-policy.md`
-- [ ] T078 [USER] Provide provider API credentials (OpenRouter / judge LLM) via Doppler and document required keys in `docs/superpowers/pilot/runbooks/vps-secrets-bootstrap.md`
+- [x] T077 [USER] Approve and record model budget caps, fallback order, and kill-switch thresholds in `docs/superpowers/pilot/runbooks/budget-policy.md`
+- [x] T078 [USER] Provide provider API credentials (OpenRouter / judge LLM) via Doppler and document required keys in `docs/superpowers/pilot/runbooks/vps-secrets-bootstrap.md`
 - [x] T014 Configure feature-level quality and test command matrix in `docs/superpowers/pilot/runbooks/verification-matrix.md` (depends on T073/T074)
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
@@ -182,20 +182,20 @@ These tasks must be performed (or explicitly approved) by the user and cannot be
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T015 [P] [US1] Add contract test for blocked-action event payload in `tests/contract/test_guardrail_event_contract.py`
-- [ ] T016 [P] [US1] Add integration test for guarded unattended run path in `tests/integration/test_guarded_overnight_run.py`
-- [ ] T017 [P] [US1] Add integration test for offline/online profile enforcement in `tests/integration/test_execution_profiles.py`
-- [ ] T051 [P] [US1] Add integration test for orchestrator iteration loop with satisfaction-based termination in `tests/integration/test_orchestrator_iteration_loop.py`
+- [x] T015 [P] [US1] Add contract test for blocked-action event payload in `tests/contract/test_guardrail_event_contract.py`
+- [x] T016 [P] [US1] Add integration test for guarded unattended run path in `tests/integration/test_guarded_overnight_run.py`
+- [x] T017 [P] [US1] Add integration test for offline/online profile enforcement in `tests/integration/test_execution_profiles.py`
+- [x] T051 [P] [US1] Add integration test for orchestrator iteration loop with satisfaction-based termination in `tests/integration/test_orchestrator_iteration_loop.py`
 
 ### Implementation for User Story 1
 
-- [ ] T018 [P] [US1] Implement guardrail policy loader in `src/services/guardrail_policy_service.py`
-- [ ] T019 [P] [US1] Implement blocked-command interception adapter in `src/services/guardrail_enforcement_service.py`
-- [ ] T020 [US1] Implement unattended run launcher workflow in `src/cli/run_overnight.py`
-- [ ] T021 [US1] Implement run lifecycle state transitions in `src/services/run_session_service.py`
-- [ ] T022 [US1] Implement blocked-action logging with reason codes in `src/services/guardrail_audit_service.py`
-- [ ] T023 [US1] Wire profile selection (`offline` default) in `src/services/run_profile_service.py`
-- [ ] T052 [US1] Implement orchestrator iteration controller with satisfaction-based loop termination in `src/services/orchestrator_loop_service.py`
+- [x] T018 [P] [US1] Implement guardrail policy loader in `src/services/guardrail_policy_service.py`
+- [x] T019 [P] [US1] Implement blocked-command interception adapter in `src/services/guardrail_enforcement_service.py`
+- [x] T020 [US1] Implement unattended run launcher workflow in `src/cli/run_overnight.py`
+- [x] T021 [US1] Implement run lifecycle state transitions in `src/services/run_session_service.py`
+- [x] T022 [US1] Implement blocked-action logging with reason codes in `src/services/guardrail_audit_service.py`
+- [x] T023 [US1] Wire profile selection (`offline` default) in `src/services/run_profile_service.py`
+- [x] T052 [US1] Implement orchestrator iteration controller with satisfaction-based loop termination in `src/services/orchestrator_loop_service.py`
 - [ ] T079 [USER] Author initial guardrail blocklist policy file in `docs/superpowers/pilot/config/guardrail-policy.yaml`
 - [ ] T080 [US1] Implement NTM adapter wiring for command interception in `src/services/ntm_adapter.py`
 - [ ] T081 [US1] Implement Ralph orchestrator launch integration in `src/services/ralph_launcher.py`

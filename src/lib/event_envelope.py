@@ -21,7 +21,7 @@ import re
 import secrets
 from dataclasses import dataclass, field
 from datetime import datetime
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 
 from lib.run_identity import to_iso8601, utc_now
@@ -38,7 +38,7 @@ _EVENT_ID_SUFFIX_BYTES = 4
 _REASON_CODE_PATTERN = re.compile(r"^[A-Z]{2,4}\.[a-z]+\.[a-z0-9][a-z0-9-]*$")
 
 
-class EventType(str, Enum):
+class EventType(StrEnum):
     """Canonical event type — matches data-model.md §7 enum exactly."""
 
     EXECUTION = "execution"
@@ -48,7 +48,7 @@ class EventType(str, Enum):
     SYSTEM = "system"
 
 
-class Severity(str, Enum):
+class Severity(StrEnum):
     """Event severity — matches status-taxonomy.md §4 exactly."""
 
     INFO = "info"
