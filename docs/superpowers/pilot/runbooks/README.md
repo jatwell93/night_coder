@@ -52,11 +52,13 @@ each task ships.
 | Task | Runbook | Purpose |
 |------|---------|---------|
 | T024 | [`us1-safe-execution.md`](./us1-safe-execution.md) | US1 operator flow — safe unattended execution. |
-| T033 | `us2-outcome-judging.md` | US2 reviewer flow — outcome-based judging. |
-| T043 | `us3-dtu-memory-loop.md` | US3 continuous validation — DTU + memory feedback. |
+| T033 | [`us2-outcome-judging.md`](./us2-outcome-judging.md) | US2 reviewer flow — outcome-based judging. |
+| T043 | [`us3-dtu-memory-loop.md`](./us3-dtu-memory-loop.md) | US3 continuous validation — DTU + memory feedback. |
 | T044 | `trial-e2e.md` | End-to-end overnight trial runbook (Phase 6). |
 | T045 | `troubleshooting.md` | Failure-mode troubleshooting matrix. |
 | T048 | `verification-results.md` | Full verification matrix outcomes. |
+| T089 | [`memory-service-bootstrap.md`](./memory-service-bootstrap.md) | Memory service bootstrap and sqlite_vec health/backup contract. |
+| T091 | [`langfuse-bootstrap.md`](./langfuse-bootstrap.md) | Langfuse self-hosted Phase 2 deployment and OTLP wiring. |
 
 ## Runbook conventions
 

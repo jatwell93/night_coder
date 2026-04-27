@@ -1,0 +1,25 @@
+{
+  "profiles": [
+    {
+      "scenario_id": "SCN-PILOT-001",
+      "description": "Healthy upstream status response.",
+      "mapping_files": [
+        "scn-pilot-001-happy-path.json"
+      ]
+    },
+    {
+      "scenario_id": "SCN-PILOT-002",
+      "description": "Timeout via delayed response for retry/exhaustion behavior.",
+      "mapping_files": [
+        "scn-pilot-002-timeout-delay.json"
+      ]
+    },
+    {
+      "scenario_id": "SCN-PILOT-003",
+      "description": "Malformed JSON response for parser-failure handling.",
+      "mapping_files": [
+        "scn-pilot-003-malformed-json.json"
+      ]
+    }
+  ]
+}

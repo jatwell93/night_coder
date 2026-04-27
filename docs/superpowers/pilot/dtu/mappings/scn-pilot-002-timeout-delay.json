@@ -1,0 +1,17 @@
+{
+  "name": "scn-pilot-002-timeout-delay",
+  "request": {
+    "method": "GET",
+    "url": "/api/status"
+  },
+  "response": {
+    "status": 200,
+    "fixedDelayMilliseconds": 15000,
+    "jsonBody": {
+      "status": "ok"
+    },
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

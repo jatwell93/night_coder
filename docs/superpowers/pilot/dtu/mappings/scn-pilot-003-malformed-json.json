@@ -1,0 +1,14 @@
+{
+  "name": "scn-pilot-003-malformed-json",
+  "request": {
+    "method": "GET",
+    "url": "/api/status"
+  },
+  "response": {
+    "status": 200,
+    "body": "{\"status\":\"ok\"",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

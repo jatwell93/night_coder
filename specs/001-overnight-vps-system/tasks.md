@@ -245,31 +245,31 @@ These tasks must be performed (or explicitly approved) by the user and cannot be
 
 ### Tests for User Story 3 (REQUIRED) ⚠️
 
-- [ ] T034 [P] [US3] Add contract test for run manifest schema compliance in `tests/contract/test_run_manifest_contract.py`
-- [ ] T035 [P] [US3] Add integration test for DTU-only validation execution in `tests/integration/test_dtu_validation_cycle.py`
-- [ ] T036 [P] [US3] Add integration test for memory retrieval reducing repeated failures in `tests/integration/test_memory_feedback_loop.py`
-- [ ] T053 [P] [US3] Add integration test for morning review report assembly from telemetry and verdicts in `tests/integration/test_morning_review_report.py`
-- [ ] T068 [P] [US3] Add integration test for DTU-startup failure classification as infrastructure failure in `tests/integration/test_dtu_startup_failure.py`
-- [ ] T069 [P] [US3] Add integration test for stale-memory relevance filtering in `tests/integration/test_memory_relevance_filter.py`
-- [ ] T070 [P] [US3] Add integration test for partial telemetry capture on failed runs in `tests/integration/test_partial_telemetry_failed_run.py`
+- [x] T034 [P] [US3] Add contract test for run manifest schema compliance in `tests/contract/test_run_manifest_contract.py`
+- [x] T035 [P] [US3] Add integration test for DTU-only validation execution in `tests/integration/test_dtu_validation_cycle.py`
+- [x] T036 [P] [US3] Add integration test for memory retrieval reducing repeated failures in `tests/integration/test_memory_feedback_loop.py`
+- [x] T053 [P] [US3] Add integration test for morning review report assembly from telemetry and verdicts in `tests/integration/test_morning_review_report.py`
+- [x] T068 [P] [US3] Add integration test for DTU-startup failure classification as infrastructure failure in `tests/integration/test_dtu_startup_failure.py`
+- [x] T069 [P] [US3] Add integration test for stale-memory relevance filtering in `tests/integration/test_memory_relevance_filter.py`
+- [x] T070 [P] [US3] Add integration test for partial telemetry capture on failed runs in `tests/integration/test_partial_telemetry_failed_run.py`
 
 ### Implementation for User Story 3
 
-- [ ] T037 [P] [US3] Implement DTU dependency readiness checker in `src/services/dtu_health_service.py`
-- [ ] T038 [P] [US3] Implement DTU-backed scenario executor in `src/services/dtu_validation_service.py`
-- [ ] T039 [P] [US3] Implement memory retrieval and writeback orchestration in `src/services/memory_feedback_service.py`
-- [ ] T040 [US3] Implement telemetry event publisher for execution/safety/judge/memory in `src/services/telemetry_service.py`
-- [ ] T041 [US3] Implement run manifest builder and writer in `src/services/run_manifest_service.py`
-- [ ] T042 [US3] Link telemetry, memory, and manifest steps into end-of-run workflow in `src/services/run_finalize_service.py`
-- [ ] T054 [US3] Implement morning review report assembler in `src/services/morning_review_service.py`
-- [ ] T071 [US3] Implement scenario catalog loader with read-only boundary enforcement in `src/services/scenario_catalog_service.py`
-- [ ] T072 [US3] Implement memory relevance and staleness filtering before writeback/reuse in `src/services/memory_relevance_service.py`
-- [ ] T087 [USER] Author first DTU behaviour profile(s) under `docs/superpowers/pilot/dtu/` (WireMock stub definitions for scenarios from T083)
-- [ ] T088 [US3] Implement WireMock DTU configuration loader and lifecycle control in `src/services/wiremock_dtu_service.py`
-- [ ] T089 [US3] Bootstrap mcp-memory-service (sqlite_vec storage path, health check, startup contract) in `docs/superpowers/pilot/runbooks/memory-service-bootstrap.md`
-- [ ] T090 [US3] Implement OTEL exporter wiring for Langfuse (phase 1 files, phase 2 UI) in `src/lib/otel_setup.py`
-- [ ] T091 [US3] Document Langfuse self-hosted phase 2 deployment in `docs/superpowers/pilot/runbooks/langfuse-bootstrap.md`
-- [ ] T043 [US3] Document US3 continuous validation flow in `docs/superpowers/pilot/runbooks/us3-dtu-memory-loop.md`
+- [x] T037 [P] [US3] Implement DTU dependency readiness checker in `src/services/dtu_health_service.py`
+- [x] T038 [P] [US3] Implement DTU-backed scenario executor in `src/services/dtu_validation_service.py`
+- [x] T039 [P] [US3] Implement memory retrieval and writeback orchestration in `src/services/memory_feedback_service.py`
+- [x] T040 [US3] Implement telemetry event publisher for execution/safety/judge/memory in `src/services/telemetry_service.py`
+- [x] T041 [US3] Implement run manifest builder and writer in `src/services/run_manifest_service.py`
+- [x] T042 [US3] Link telemetry, memory, and manifest steps into end-of-run workflow in `src/services/run_finalize_service.py`
+- [x] T054 [US3] Implement morning review report assembler in `src/services/morning_review_service.py`
+- [x] T071 [US3] Implement scenario catalog loader with read-only boundary enforcement in `src/services/scenario_catalog_service.py`
+- [x] T072 [US3] Implement memory relevance and staleness filtering before writeback/reuse in `src/services/memory_relevance_service.py`
+- [x] T087 [USER] Author first DTU behaviour profile(s) under `docs/superpowers/pilot/dtu/` (WireMock stub definitions for scenarios from T083)
+- [x] T088 [US3] Implement WireMock DTU configuration loader and lifecycle control in `src/services/wiremock_dtu_service.py`
+- [x] T089 [US3] Bootstrap mcp-memory-service (sqlite_vec storage path, health check, startup contract) in `docs/superpowers/pilot/runbooks/memory-service-bootstrap.md`
+- [x] T090 [US3] Implement OTEL exporter wiring for Langfuse (phase 1 files, phase 2 UI) in `src/lib/otel_setup.py`
+- [x] T091 [US3] Document Langfuse self-hosted phase 2 deployment in `docs/superpowers/pilot/runbooks/langfuse-bootstrap.md`
+- [x] T043 [US3] Document US3 continuous validation flow in `docs/superpowers/pilot/runbooks/us3-dtu-memory-loop.md`
 
 **Checkpoint**: All user stories are independently functional and traceable.
 
