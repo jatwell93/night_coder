@@ -1,0 +1,35 @@
+policy_id: us1-pilot-baseline
+version: "1"
+mode: block_allow_only
+applies_to_profile: both
+
+# Commands matching any blocked pattern are denied even if allow patterns match.
+blocked_patterns:
+  - "rm -rf /*"
+  - "sudo *"
+  - "su *"
+  - "pkexec *"
+  - "mkfs*"
+  - ":(){ :|:& };:"
+  - "* > /etc/*"
+  - "*chmod 777 /*"
+  - "*tee /etc/*"
+  - "*curl*http://*"
+  - "*wget*http://*"
+
+# Commands must match one of these allow patterns to proceed.
+allowed_patterns:
+  - "python*"
+  - "pytest*"
+  - "ruff*"
+  - "mypy*"
+  - "ls*"
+  - "cat*"
+  - "echo*"
+  - "git status*"
+  - "git diff*"
+  - "git log*"
+  - "git rev-parse*"
+  - "ntm *"
+  - "ralph *"
+  - "doppler run *"

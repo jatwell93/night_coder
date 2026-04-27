@@ -20,8 +20,7 @@ under the `deploy` user's systemd session.
 **Decision reference**
 
 - Orchestrator choice: `dec-20260406-001` (Ralph).
-- Run launcher (T020): `src/cli/run_overnight.py` — **not yet implemented**. The wrapper script
-  below stubs the launcher call with a clearly-marked placeholder; replace it once T020 ships.
+- Run launcher (T020): `src/cli/run_overnight.py` (implemented).
 
 ---
 
@@ -77,6 +76,9 @@ sudo loginctl enable-linger deploy
 Create the script that the systemd service calls. It: exports the catalog path, asserts NTM is
 running, injects secrets via Doppler, and calls the run launcher.
 
+Canonical copy is tracked in-repo at `scripts/run-overnight.sh`; sync it to the VPS path used by
+the service (`~/night_coder/scripts/run-overnight.sh`).
+
 ```bash
 mkdir -p ~/night_coder/scripts
 cat > ~/night_coder/scripts/run-overnight.sh << 'EOF'
@@ -118,12 +120,8 @@ echo "[run-overnight] Scenario catalog: ${SCENARIO_CATALOG_PATH}"
 ls "${SCENARIO_CATALOG_PATH}"
 
 # ── Launch ──────────────────────────────────────────────────────────────────
-# PLACEHOLDER: T020 (src/cli/run_overnight.py) not yet implemented.
-# Replace this block with:
-#   doppler run -- python "${REPO_ROOT}/src/cli/run_overnight.py"
-# Once T020 ships. Do NOT wire a live ralph call here until the launcher exists.
-echo "[run-overnight] PLACEHOLDER: run launcher (T020) not yet implemented — skipping."
-echo "[run-overnight] Pre-launch checks passed. Exiting cleanly."
+echo "[run-overnight] Launching guarded run workflow"
+doppler run -- python "${REPO_ROOT}/src/cli/run_overnight.py" --json
 
 echo "[run-overnight] === Run complete ==="
 EOF
@@ -249,9 +247,8 @@ journalctl --user -u night-coder-run.service -f
 ```
 
 **Expected:** Script prints start banner, NTM check passes, catalog path lists the scenario file,
-then prints the T020 placeholder message and exits cleanly. There is no live launcher call until
-T020 (`src/cli/run_overnight.py`) is implemented — do not wire a `ralph run` call here before
-then (`ralph run` does not accept a `--preset` flag and will exit non-zero).
+then executes `doppler run -- python src/cli/run_overnight.py --json` and exits with service
+status `0` on success.
 
 Check exit status:
 
@@ -362,7 +359,7 @@ systemctl --user list-timers night-coder-run.timer
 - [ ] Manual trigger (`systemctl --user start night-coder-run.service`) completes without NTM or catalog errors.
 - [ ] Timer enabled and `list-timers` shows a future next-fire time.
 - [ ] `OnCalendar` value confirmed and recorded in revision table below.
-- [ ] Launcher placeholder noted — replace with `run_overnight.py` call when T020 ships.
+- [ ] `run_overnight.sh` synced from repo canonical script and points to `src/cli/run_overnight.py`.
 
 ---
 

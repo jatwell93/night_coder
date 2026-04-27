@@ -23,14 +23,29 @@ def _config(tmp_path: Path) -> RunConfig:
 
 
 def test_run_launcher_returns_summary(tmp_path: Path) -> None:
-    args = Namespace(profile=None, command=["python -m pytest -q"], json=False)
+    args = Namespace(
+        profile=None,
+        command=["python -m pytest -q"],
+        json=False,
+        execute_ralph=False,
+        ralph_config="ralph.yml",
+        ralph_backend=None,
+    )
     summary = run_launcher(args, config=_config(tmp_path))
     assert summary["run_id"].startswith("run-")
     assert summary["status"] == "completed"
     assert summary["blocked_count"] == 0
+    assert summary["ralph"] is None
 
 
 def test_run_launcher_uses_profile_override(tmp_path: Path) -> None:
-    args = Namespace(profile="online", command=["curl https://example.com"], json=False)
+    args = Namespace(
+        profile="online",
+        command=["curl https://example.com"],
+        json=False,
+        execute_ralph=False,
+        ralph_config="ralph.yml",
+        ralph_backend=None,
+    )
     summary = run_launcher(args, config=_config(tmp_path))
     assert summary["profile"] == "online"

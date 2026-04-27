@@ -196,11 +196,11 @@ These tasks must be performed (or explicitly approved) by the user and cannot be
 - [x] T022 [US1] Implement blocked-action logging with reason codes in `src/services/guardrail_audit_service.py`
 - [x] T023 [US1] Wire profile selection (`offline` default) in `src/services/run_profile_service.py`
 - [x] T052 [US1] Implement orchestrator iteration controller with satisfaction-based loop termination in `src/services/orchestrator_loop_service.py`
-- [ ] T079 [USER] Author initial guardrail blocklist policy file in `docs/superpowers/pilot/config/guardrail-policy.yaml`
-- [ ] T080 [US1] Implement NTM adapter wiring for command interception in `src/services/ntm_adapter.py`
-- [ ] T081 [US1] Implement Ralph orchestrator launch integration in `src/services/ralph_launcher.py`
-- [ ] T082 [US1] Wire run launcher into scheduler wrapper script (replace T020 placeholder) in `~/night_coder/scripts/run-overnight.sh` (document diff in `docs/superpowers/pilot/runbooks/vps-scheduler.md`)
-- [ ] T024 [US1] Document US1 operator flow in `docs/superpowers/pilot/runbooks/us1-safe-execution.md`
+- [x] T079 [USER] Author initial guardrail blocklist policy file in `docs/superpowers/pilot/config/guardrail-policy.yaml`
+- [x] T080 [US1] Implement NTM adapter wiring for command interception in `src/services/ntm_adapter.py`
+- [x] T081 [US1] Implement Ralph orchestrator launch integration in `src/services/ralph_launcher.py`
+- [x] T082 [US1] Wire run launcher into scheduler wrapper script (replace T020 placeholder) in `~/night_coder/scripts/run-overnight.sh` (document diff in `docs/superpowers/pilot/runbooks/vps-scheduler.md`)
+- [x] T024 [US1] Document US1 operator flow in `docs/superpowers/pilot/runbooks/us1-safe-execution.md`
 
 **Checkpoint**: User Story 1 should be fully functional and independently testable.
 
@@ -214,24 +214,24 @@ These tasks must be performed (or explicitly approved) by the user and cannot be
 
 ### Tests for User Story 2 (REQUIRED) ⚠️
 
-- [ ] T025 [P] [US2] Add contract test for judge verdict schema compliance in `tests/contract/test_judge_verdict_contract.py`
-- [ ] T026 [P] [US2] Add integration test for immutable judge harness boundary in `tests/integration/test_judge_immutability_boundary.py`
-- [ ] T027 [P] [US2] Add integration test for outcome-based unsatisfactory verdict path in `tests/integration/test_outcome_based_judging.py`
-- [ ] T066 [P] [US2] Add integration test for judge-unavailable fallback to `evaluation-pending` in `tests/integration/test_judge_unavailable_fallback.py`
+- [x] T025 [P] [US2] Add contract test for judge verdict schema compliance in `tests/contract/test_judge_verdict_contract.py`
+- [x] T026 [P] [US2] Add integration test for immutable judge harness boundary in `tests/integration/test_judge_immutability_boundary.py`
+- [x] T027 [P] [US2] Add integration test for outcome-based unsatisfactory verdict path in `tests/integration/test_outcome_based_judging.py`
+- [x] T066 [P] [US2] Add integration test for judge-unavailable fallback to `evaluation-pending` in `tests/integration/test_judge_unavailable_fallback.py`
 
 ### Implementation for User Story 2
 
-- [ ] T028 [P] [US2] Implement scenario evidence assembler in `src/services/scenario_evidence_service.py`
-- [ ] T029 [P] [US2] Implement external judge invocation wrapper in `src/services/judge_runner_service.py`
-- [ ] T030 [US2] Implement verdict persistence workflow in `src/services/judge_verdict_service.py`
-- [ ] T031 [US2] Implement immutable harness path guard in `src/services/judge_harness_guard_service.py`
-- [ ] T032 [US2] Integrate verdict generation into run completion pipeline in `src/services/run_completion_service.py`
-- [ ] T067 [US2] Implement judge-unavailable fallback handler setting run state to `evaluation-pending` in `src/services/judge_fallback_service.py`
-- [ ] T083 [USER] Author first production scenario(s) under external catalog path defined in T062 (3-5 outcome-based scenarios)
-- [ ] T084 [US2] Implement OpenJudge adapter with structured verdict normalization in `src/services/openjudge_adapter.py`
-- [ ] T085 [US2] Create and version judge prompt template in `docs/superpowers/pilot/judge/prompt-template.md`
-- [ ] T086 [US2] Implement LLM budget/cost guard for judge calls (respects T077 caps) in `src/services/judge_budget_service.py`
-- [ ] T033 [US2] Document US2 reviewer flow in `docs/superpowers/pilot/runbooks/us2-outcome-judging.md`
+- [x] T028 [P] [US2] Implement scenario evidence assembler in `src/services/scenario_evidence_service.py`
+- [x] T029 [P] [US2] Implement external judge invocation wrapper in `src/services/judge_runner_service.py`
+- [x] T030 [US2] Implement verdict persistence workflow in `src/services/judge_verdict_service.py`
+- [x] T031 [US2] Implement immutable harness path guard in `src/services/judge_harness_guard_service.py`
+- [x] T032 [US2] Integrate verdict generation into run completion pipeline in `src/services/run_completion_service.py`
+- [x] T067 [US2] Implement judge-unavailable fallback handler setting run state to `evaluation-pending` in `src/services/judge_fallback_service.py`
+- [x] T083 [USER] Author first production scenario(s) under external catalog path defined in T062 (3-5 outcome-based scenarios)
+- [x] T084 [US2] Implement OpenJudge adapter with structured verdict normalization in `src/services/openjudge_adapter.py`
+- [x] T085 [US2] Create and version judge prompt template in `docs/superpowers/pilot/judge/prompt-template.md`
+- [x] T086 [US2] Implement LLM budget/cost guard for judge calls (respects T077 caps) in `src/services/judge_budget_service.py`
+- [x] T033 [US2] Document US2 reviewer flow in `docs/superpowers/pilot/runbooks/us2-outcome-judging.md`
 
 **Checkpoint**: User Stories 1 and 2 both operate independently with trustworthy verdict outputs.
 
