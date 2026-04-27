@@ -42,6 +42,14 @@ morning review and V1 progression decisions.
    - Complete triage in under 10 minutes.
    - Record key failure reasons and memory updates.
 
+## Validated Pilot References
+
+- Trial runbook: `docs/superpowers/pilot/runbooks/trial-e2e.md`
+- Supervised checklist: `docs/superpowers/pilot/runbooks/supervised-dry-run.md`
+- Findings log: `docs/superpowers/pilot/runbooks/dry-run-results.md`
+- Verification record: `docs/superpowers/pilot/runbooks/verification-results.md`
+- US3 flow guide: `docs/superpowers/pilot/runbooks/us3-dtu-memory-loop.md`
+
 ## Validation Checklist
 
 - [ ] Guardrails blocked dangerous command(s) with reason code

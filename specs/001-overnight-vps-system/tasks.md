@@ -279,15 +279,15 @@ These tasks must be performed (or explicitly approved) by the user and cannot be
 
 **Purpose**: Final hardening and end-to-end verification across stories.
 
-- [ ] T044 [P] Consolidate overnight trial runbook in `docs/superpowers/pilot/runbooks/trial-e2e.md`
-- [ ] T045 [P] Add troubleshooting matrix for failure modes in `docs/superpowers/pilot/runbooks/troubleshooting.md`
-- [ ] T046 Validate performance budget and review-time targets in `tests/integration/test_trial_performance_budgets.py`
-- [ ] T047 Validate quickstart end-to-end flow in `specs/001-overnight-vps-system/quickstart.md`
-- [ ] T048 Run full verification matrix and record outcomes in `docs/superpowers/pilot/runbooks/verification-results.md`
-- [ ] T092 [P] Create morning-review report template (pairs with T054) in `docs/superpowers/pilot/runbooks/morning-review-template.md`
-- [ ] T093 [P] Create runbook index and navigation in `docs/superpowers/pilot/runbooks/INDEX.md`
-- [ ] T094 Create supervised dry-run checklist in `docs/superpowers/pilot/runbooks/supervised-dry-run.md`
-- [ ] T095 Execute supervised dry run and record findings in `docs/superpowers/pilot/runbooks/dry-run-results.md`
+- [x] T044 [P] Consolidate overnight trial runbook in `docs/superpowers/pilot/runbooks/trial-e2e.md`
+- [x] T045 [P] Add troubleshooting matrix for failure modes in `docs/superpowers/pilot/runbooks/troubleshooting.md`
+- [x] T046 Validate performance budget and review-time targets in `tests/integration/test_trial_performance_budgets.py`
+- [x] T047 Validate quickstart end-to-end flow in `specs/001-overnight-vps-system/quickstart.md`
+- [x] T048 Run full verification matrix and record outcomes in `docs/superpowers/pilot/runbooks/verification-results.md`
+- [x] T092 [P] Create morning-review report template (pairs with T054) in `docs/superpowers/pilot/runbooks/morning-review-template.md`
+- [x] T093 [P] Create runbook index and navigation in `docs/superpowers/pilot/runbooks/INDEX.md`
+- [x] T094 Create supervised dry-run checklist in `docs/superpowers/pilot/runbooks/supervised-dry-run.md`
+- [x] T095 Execute supervised dry run and record findings in `docs/superpowers/pilot/runbooks/dry-run-results.md`
 - [ ] T096 [USER] Execute go/no-go decision and enable scheduler for live unattended runs (updates `docs/superpowers/pilot/runbooks/vps-scheduler.md` §8)
 
 ---

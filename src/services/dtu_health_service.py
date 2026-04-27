@@ -15,7 +15,9 @@ class DtuStartupClassification:
     detail: str
 
 
-def classify_dtu_startup_failure(*, dependency_name: str, error_message: str) -> DtuStartupClassification:
+def classify_dtu_startup_failure(
+    *, dependency_name: str, error_message: str
+) -> DtuStartupClassification:
     """Classify DTU startup failures as infrastructure run failures."""
     return DtuStartupClassification(
         dependency_name=dependency_name,
