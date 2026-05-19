@@ -1,0 +1,10 @@
+# Copy to repo root as ralph.yml (do not commit secrets).
+# Generate fresh config: cd ~/night_coder && ralph init --backend opencode
+# Or gemini / claude per vps-ralph-install.md
+
+cli:
+  backend: opencode
+
+limits:
+  max_iterations: 40
+  max_runtime_seconds: 14400

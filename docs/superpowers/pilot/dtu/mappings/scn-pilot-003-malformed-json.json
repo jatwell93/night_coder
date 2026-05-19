@@ -1,5 +1,6 @@
 {
   "name": "scn-pilot-003-malformed-json",
+  "priority": 9,
   "request": {
     "method": "GET",
     "url": "/api/status"

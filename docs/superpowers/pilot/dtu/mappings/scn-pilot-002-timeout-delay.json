@@ -1,5 +1,6 @@
 {
   "name": "scn-pilot-002-timeout-delay",
+  "priority": 8,
   "request": {
     "method": "GET",
     "url": "/api/status"

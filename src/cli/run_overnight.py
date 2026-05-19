@@ -66,13 +66,23 @@ def run_launcher(args: argparse.Namespace, *, config: RunConfig) -> dict[str, An
     ralph_summary: dict[str, Any] | None = None
     status = guard_result.status
     if args.execute_ralph and guard_result.status == "completed":
+        ralph_cwd = (
+            config.artifacts_root.parent if config.artifacts_root.parent else None
+        )
+        ralph_config = Path(args.ralph_config)
+        if ralph_cwd is not None and not ralph_config.is_absolute():
+            ralph_config = ralph_cwd / ralph_config
+        prompt_file: Path | None = None
+        if ralph_cwd is not None:
+            default_prompt = ralph_cwd / "PROMPT.md"
+            if default_prompt.is_file():
+                prompt_file = default_prompt
         launch = launch_ralph_run(
-            config_path=Path(args.ralph_config),
+            config_path=ralph_config,
+            prompt_file=prompt_file,
             backend=args.ralph_backend,
             max_iterations=config.budget.iteration_cap,
-            working_directory=config.artifacts_root.parent
-            if config.artifacts_root.parent
-            else None,
+            working_directory=ralph_cwd,
             enforce_ntm=True,
         )
         ralph_summary = {

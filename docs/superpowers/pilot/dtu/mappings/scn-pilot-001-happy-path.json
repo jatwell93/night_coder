@@ -1,5 +1,6 @@
 {
   "name": "scn-pilot-001-happy-path",
+  "priority": 1,
   "request": {
     "method": "GET",
     "url": "/api/status"
